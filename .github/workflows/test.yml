@@ -11,7 +11,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      target_api_level: 34
+      target_api_level: 37
       profile: medium_phone
 
     steps:
