@@ -104,4 +104,7 @@ is used for `adb install` evidence only; UI/instrumented coverage on API 37 come
 
 ## CI (GitHub Actions, API 37 emulator)
 
-RESULT_PLACEHOLDER_CI
+`.github/workflows/test.yml` → `target_api_level: "37.0"`, `android-emulator-runner` v2.38.0.
+
+- Run 1 (commit `a2d19a40`, runner v2.33.0, `target_api_level: 37`): https://github.com/eashansinha/medTimer/actions/runs/38256240864 — `test` job failed at "Install Android SDK": `Warning: Failed to find package 'platforms;android-37'` (no test executed). `dependency-review` job: "Dependency review is not supported on this repository" (GitHub setting, unrelated to this change).
+- Run 2 (after the workflow fix): see the checks on https://github.com/eashansinha/medTimer/pull/4 — outcome reported from the real run only.

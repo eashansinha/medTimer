@@ -239,7 +239,7 @@ android {
                 fileTree(layout.buildDirectory.dir("intermediates/javac/")) {
                     exclude(exclusions)
                 },
-                fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/")) {
+                fileTree(layout.buildDirectory.dir("intermediates/built_in_kotlinc/")) {
                     exclude(exclusions)
                 }
             ))
