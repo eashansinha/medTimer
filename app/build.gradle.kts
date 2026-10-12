@@ -218,6 +218,32 @@ android {
         "**/*Directions.*"
     )
 
+    // Unit-test-only coverage report (no device needed); used for the upgrade before/after evidence
+    tasks.register<JacocoReport>("jacocoUnitTestReport") {
+        dependsOn(unitTests)
+        group = "Reporting"
+        description = "Execute JVM unit tests and generate a Jacoco coverage report (no device required)"
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+            csv.required.set(true)
+        }
+        sourceDirectories.setFrom(layout.projectDirectory.dir("src/main/java"))
+        classDirectories.setFrom(
+            files(
+                fileTree(layout.buildDirectory.dir("intermediates/javac/debug")) {
+                    exclude(exclusions)
+                },
+                fileTree(layout.buildDirectory.dir("intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes")) {
+                    exclude(exclusions)
+                }
+            ))
+        executionData.setFrom(
+            files(
+                fileTree(layout.buildDirectory) { include("**/testDebugUnitTest.exec") }
+            ))
+    }
+
     // Register a JacocoReport task for code coverage analysis
     tasks.register<JacocoReport>("JacocoDebugCodeCoverage") {
         // Depend on unit tests and Android tests tasks
@@ -238,7 +264,7 @@ android {
                 fileTree(layout.buildDirectory.dir("intermediates/javac/")) {
                     exclude(exclusions)
                 },
-                fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/")) {
+                fileTree(layout.buildDirectory.dir("intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes")) {
                     exclude(exclusions)
                 }
             ))
