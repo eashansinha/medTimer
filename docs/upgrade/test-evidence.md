@@ -138,6 +138,15 @@ is not covered by this run.
   - Fixes in `3df9b871`: `disk-size: 8192M` + new AVD cache key, post-boot commands moved into `.github/scripts/ci-emulator-run.sh`
     (single shell), and the script now fails unless `app/build/outputs/androidTest-results/connected/debug/TEST-*.xml` exists with
     `tests>0` and `failures=errors=0` — so the AGP silent pass above can no longer turn the job green.
+  - Run 4 `https://github.com/eashansinha/medTimer/actions/runs/38303291100` (commit `e3fd6663`, with the `3df9b871` hardening): emulator
+    booted, but system services were unavailable (`cmd: Can't find service: activity` / `settings` / `package`); the AGP device runner could
+    not install the APK → `No connected test report produced` (the new check correctly turned the job red instead of the earlier silent
+    pass). The script's own install succeeded on retry 3 (`Success`), but `am start` → `Failure calling service activity: Broken pipe`,
+    `screenrecord` → `Encoder failed (err=-38)` (no MP4), and `monkey` → `No activities found to run, monkey aborted`. Artifacts: `TestReports`
+    (id 11770984572), `AppLaunchRecording-api37` (id 11772375198, 232 bytes = the empty screencap only).
+  - Unrelated flake in run 4: `androidTest (28, medium_tablet)` (`compatibilityTest.yml`, untouched on this branch) failed during
+    `sdkmanager --install 'system-images;android-28;google_apis;x86_64'` with `Error on ZipFile unknown archive` before any test ran; the same
+    job passed in runs 1–3.
   - Conclusion at hand-back: **no Android 17 (API 37) instrumented or UI evidence exists** — neither locally (SurfaceFlinger crash loop) nor
     in CI (API 37.0 `google_apis` image: package/input system services unavailable or storage exhausted). The latest run's result is in
     the PR checks tab; `docs/compliance-drafts/verification-report.md` §6 is updated with each observed run.
