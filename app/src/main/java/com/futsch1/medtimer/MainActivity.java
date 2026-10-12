@@ -119,11 +119,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Android 16+ (targetSdk 36) ignores the edge-to-edge opt-out, so the root view pads itself
-    // for the system bars and display cutout instead of relying on fitsSystemWindows.
+    // for the system bars, display cutout and the keyboard instead of relying on fitsSystemWindows.
     private static void applySystemBarInsets(View root) {
         ViewCompat.setOnApplyWindowInsetsListener(root, (view, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
-            view.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+            Insets bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+            Insets ime = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
+            view.setPadding(bars.left, bars.top, bars.right, Math.max(bars.bottom, ime.bottom));
             return WindowInsetsCompat.CONSUMED;
         });
     }
