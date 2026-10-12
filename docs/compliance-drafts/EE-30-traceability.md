@@ -20,4 +20,6 @@ Ticket → impact IDs → commits → tests → evidence. Branch `devin/ee-30-an
 | EE-30 | IMP-11, IMP-12, IMP-13 and all other "No" rows | not affected, with evidence | `17b5812a` | — | search evidence in impact assessment |
 | EE-30 | — | JaCoCo class dirs for built-in Kotlin | `2602cc75` | — | test-evidence (without it Kotlin classes report 0 %) |
 | EE-30 | — | CI instrumented tests on API 37 | `062beda9` | GitHub Actions `test.yml` | run URL in verification report |
+| EE-30 | IMP-12 (test stack) | AndroidX Test / Espresso pinned back to 3.6.1 / 1.6.x | `ec979393` | `connectedDebugAndroidTest` on api35: 21/21 (was 15/21 failing with Espresso 3.7.0) | `docs/upgrade/evidence/api35-connectedDebugAndroidTest.xml` |
+| EE-30 | — | Emulator evidence | — | manual flow + recording | `docs/upgrade/evidence/api35-0{1..5}-*.png`, `api35-reminder-flow.mp4`; api37 `adb install` result in verification report |
 | EE-30 | — | Docs: test evidence, architecture, change record, verification report, traceability, changelog, README | `0faa107b`, (this commit) | — | this directory |

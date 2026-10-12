@@ -59,6 +59,12 @@ cites the file/line or the empty grep. No row is marked "not affected" from memo
 ## C. Items that need a runtime check (no code change expected)
 
 * IMP-01 (JobScheduler quota) and IMP-20 (exact alarm) — API 35 emulator flow + API 37 CI instrumented run.
+* IMP-12 (lock-free `MessageQueue`) — production code is unaffected, but the *test* stack is: Espresso 3.7.0
+  (which replaces its `MessageQueue` reflection with `TestLooperManagerCompat`, i.e. the Android 17-ready path)
+  never reported the app's `OptionsMenu` "Export" `HandlerThread` looper (registered via
+  `IdlingRegistry.registerLooperAsIdlingResource`) as idle on the API 35 emulator → 15/21 instrumented tests timed
+  out. Espresso is kept at 3.6.1 on this branch (21/21 pass on API 35). Whether 3.6.1's reflection still works on
+  an API 37 device is answered by the CI run on API 37, not guessed here.
 * IMP-05 (edge-to-edge) — API 35 screenshots only. **Known limitation:** the API 36/37 system images
   crash-loop SurfaceFlinger under the headless emulator on this VM, so API 37 evidence is limited to
   build + `adb install`; UI behaviour on a real Android 17 device/CI emulator remains to be confirmed by a human.
