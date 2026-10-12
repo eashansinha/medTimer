@@ -1,9 +1,8 @@
 plugins {
     id("com.android.application")
     id("androidx.room")
-    id("com.github.triplet.play") version "3.12.1"
+    id("com.github.triplet.play") version "4.1.1"
     id("androidx.navigation.safeargs")
-    id("org.jetbrains.kotlin.android")
     id("jacoco")
     //noinspection GradleDependency: Version 6 crashes with an error in apache.commons.compress
     id("org.sonarqube") version "5.1.0.4882"
@@ -12,6 +11,12 @@ plugins {
 
 room {
     schemaDirectory("$projectDir/schemas")
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
 }
 
 android {
@@ -67,9 +72,6 @@ android {
         animationsDisabled = true
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     lint {
         abortOnError = true
         warningsAsErrors = true
@@ -81,13 +83,13 @@ dependencies {
     val appcompatVersion = "1.7.0"
     val materialVersion = "1.12.0"
     val constraintLayoutVersion = "2.2.1"
-    val androidXNavigationVersion = "2.8.9"
+    val androidXNavigationVersion = "2.10.2"
     val preferenceKtxVersion = "1.2.1"
     val lifecycleExtensionsVersion = "2.2.0"
     val workRuntimeVersion = "2.10.0"
     val coreKtxVersion = "1.15.0"
     val lifecycleViewmodelKtxVersion = "2.8.7"
-    val roomVersion = "2.6.1"
+    val roomVersion = "2.8.5"
     val colorPickerViewVersion = "3.1.0"
     val simplyPDFVersion = "2.1.1"
     val gsonVersion = "2.12.1"
