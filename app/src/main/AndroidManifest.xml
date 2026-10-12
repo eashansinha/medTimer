@@ -49,6 +49,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Android 16 "Safer Intents" (opt-in strict matching): the custom-snooze / variable-amount notification
+             actions are explicit intents with custom actions. They target this non-exported alias of MainActivity
+             whose filter declares those actions, so they keep matching under strict intent resolution without
+             widening the exported launcher activity's filter. -->
+        <activity-alias
+            android:name=".NotificationActionActivity"
+            android:exported="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="VARIABLE_AMOUNT" />
+                <action android:name="CUSTOM_SNOOZE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity-alias>
         <activity
             android:name=".MedTimerAppIntro"
             android:theme="@style/Theme.MedTimer" />
@@ -74,6 +89,7 @@
                 <action android:name="com.futsch1.medTimer.RESCHEDULE_ACTION" />
                 <action android:name="com.futsch1.medTimer.DISMISSED_ACTION" />
                 <action android:name="com.futsch1.medTimer.TAKEN_ACTION" />
+                <action android:name="com.futsch1.medTimer.SNOOZE_ACTION" />
             </intent-filter>
         </receiver>
 
