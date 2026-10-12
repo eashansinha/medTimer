@@ -122,3 +122,7 @@ Independent second pass through the real UI (no reuse of the data above). Comman
 | `independent-api35-widget-flow.mp4` | 37 s screen recording of the flow |
 
 Not exercised in this pass: 4 populated lines in the large *Recent events* widget; anything on API 37 (see above).
+
+## CI result on the final PR head (941b48a8)
+
+https://github.com/eashansinha/medTimer/pull/4/checks — `build` ✅; `androidTest` (28, 34) × (medium_phone, medium_tablet) ✅ 4/4; `test` ❌: the API 37.0 emulator on the GitHub runner lost `system_server` between boot and the end of `./gradlew packageDebug` (`adb shell input keyevent 3` → `Can't find service: input`, exit 20; emulator log `Failed to find ColorBuffer`), so the instrumented suite never started on API 37 — same image instability as the local api37 AVD, not an app crash; `Analyze` ❌ = lint (4 Espresso `GradleDependency` errors; fails on `main` with 19); `dependency-review` ❌ = GHAS not enabled on the fork.
