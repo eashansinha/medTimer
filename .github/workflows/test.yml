@@ -79,7 +79,7 @@ jobs:
             adb exec-out screencap -p > app/build/outputs/app-launch-api${{ env.target_api_level }}.png
             wait
             adb pull /sdcard/app-launch-api${{ env.target_api_level }}.mp4 app/build/outputs/ || true
-            adb shell monkey -p com.futsch1.medtimer -v 5000 --throttle 10 || true
+            adb shell monkey -p com.futsch1.medtimer -v 5000 --throttle 10 || { echo "monkey failed"; [ "$EXIT_CODE" -eq 0 ] && EXIT_CODE=1; }
             exit $EXIT_CODE
           cores: 4
 
