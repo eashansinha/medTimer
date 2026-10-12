@@ -37,6 +37,7 @@ See [`verification-report.md`](verification-report.md) and [`../upgrade/test-evi
 - `TagTest.tagHandling` (instrumented) fails on the headless API 35 emulator before and after the upgrade (dialog button click times out) — pre-existing, unrelated to the upgrade.
 - `androidx.lifecycle:lifecycle-extensions:2.2.0` is a deprecated artifact still referenced by the build.
 - SonarQube analysis is no longer available from this branch's build.
+- Espresso is pinned to 3.6.1; with 3.7.0 the instrumented suite hangs (`LooperIdlingResource-Export` never idle). Lint therefore still reports the four Espresso artifacts as outdated (`GradleDependency`).
 - Tablet / large-screen layouts (IMP-05/IMP-41) were not exercised — no tablet AVD on the VM.
 
 ## Open items for the human reviewer
@@ -45,4 +46,5 @@ See [`verification-report.md`](verification-report.md) and [`../upgrade/test-evi
 2. Run the instrumented suite on a physical Android 17 device (notification tap, exact alarm, widget).
 3. Review and, if accepted, finalize the DRAFT compliance documents in this directory.
 4. Replace `lifecycle-extensions` with the individual lifecycle artifacts (out of scope here: no drive-by refactors).
-5. Bump `versionName`/`versionCode` to 1.17.0 at release time (not done in this branch — no publishing).
+5. Investigate Espresso 3.7.0 `LooperIdlingResource` vs. `OptionsMenu.setupGenerateTestData()` idling registration, then re-bump Espresso.
+6. Bump `versionName`/`versionCode` to 1.17.0 at release time (not done in this branch — no publishing).

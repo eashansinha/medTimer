@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="23" failures="2" errors="0" skipped="0" time="0.000" timestamp="2026-10-12T18:53:58" hostname="localhost">
+  <testsuite name="com.futsch1.medtimer.Android17BehaviorTest" tests="2" failures="1" errors="0" skipped="0" time="22.953" timestamp="2026-10-12T18:53:58" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="edgeToEdgeInsetsKeepToolbarAndBottomNavigationVisible" classname="com.futsch1.medtimer.Android17BehaviorTest" time="21.162">
+      <failure>java.lang.AssertionError: expected:&lt;null&gt; but was:&lt;Bottom navigation bottom 1552 overlaps the navigation bar inset 48 (window bottom 1552)&gt;
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:120)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at com.futsch1.medtimer.Android17BehaviorTest.edgeToEdgeInsetsKeepToolbarAndBottomNavigationVisible(Android17BehaviorTest.java:81)
+</failure>
+    </testcase>
+    <testcase name="systemBackReturnsToOverview" classname="com.futsch1.medtimer.Android17BehaviorTest" time="1.791" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.BasicUITest" tests="2" failures="0" errors="0" skipped="0" time="23.144" timestamp="2026-10-12T18:53:58" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="basicUITest" classname="com.futsch1.medtimer.BasicUITest" time="10.092" />
+    <testcase name="menuHandlingTest" classname="com.futsch1.medtimer.BasicUITest" time="13.052" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.CalendarTest" tests="1" failures="0" errors="0" skipped="0" time="6.982" timestamp="2026-10-12T18:53:58" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="calendarTest" classname="com.futsch1.medtimer.CalendarTest" time="6.982" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.ExportBackupTest" tests="2" failures="0" errors="0" skipped="0" time="15.739" timestamp="2026-10-12T18:53:58" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="testTriggerBackup" classname="com.futsch1.medtimer.ExportBackupTest" time="6.635" />
+    <testcase name="testTriggerExport" classname="com.futsch1.medtimer.ExportBackupTest" time="9.104" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.MedicineStockTest" tests="1" failures="0" errors="0" skipped="0" time="23.213" timestamp="2026-10-12T18:53:58" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="medicineStockTest" classname="com.futsch1.medtimer.MedicineStockTest" time="23.213" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.NotificationTest" tests="6" failures="0" errors="0" skipped="0" time="545.244" timestamp="2026-10-12T18:53:58" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="hiddenMedicineName" classname="com.futsch1.medtimer.NotificationTest" time="9.193" />
+    <testcase name="customSnooze" classname="com.futsch1.medtimer.NotificationTest" time="123.911" />
+    <testcase name="repeatingReminders" classname="com.futsch1.medtimer.NotificationTest" time="10.860" />
+    <testcase name="notificationTest" classname="com.futsch1.medtimer.NotificationTest" time="232.913" />
+    <testcase name="variableAmount" classname="com.futsch1.medtimer.NotificationTest" time="139.821" />
+    <testcase name="actionOnDismissedNotification" classname="com.futsch1.medtimer.NotificationTest" time="28.546" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.ReminderTest" tests="4" failures="0" errors="0" skipped="0" time="56.868" timestamp="2026-10-12T18:53:58" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="reminderTypeTest" classname="com.futsch1.medtimer.ReminderTest" time="17.744" />
+    <testcase name="deleteLinkedReminderTest" classname="com.futsch1.medtimer.ReminderTest" time="13.208" />
+    <testcase name="editReminderTest" classname="com.futsch1.medtimer.ReminderTest" time="7.730" />
+    <testcase name="activeReminderTest" classname="com.futsch1.medtimer.ReminderTest" time="18.186" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.ScreenshotsTest" tests="1" failures="0" errors="0" skipped="0" time="20.505" timestamp="2026-10-12T18:53:58" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="screenshotsTest" classname="com.futsch1.medtimer.ScreenshotsTest" time="20.505" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.TagTest" tests="3" failures="1" errors="0" skipped="0" time="109.559" timestamp="2026-10-12T18:53:58" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="medicineVisibility" classname="com.futsch1.medtimer.TagTest" time="10.145" />
+    <testcase name="activateAndOverviewVisibility" classname="com.futsch1.medtimer.TagTest" time="19.737" />
+    <testcase name="tagHandling" classname="com.futsch1.medtimer.TagTest" time="79.677">
+      <failure>com.adevinta.android.barista.internal.failurehandler.BaristaException: Could not perform action single click on view view.getId() is &lt;16908313/android:id/button1&gt;
+	at com.adevinta.android.barista.internal.failurehandler.SpyFailureHandler.resendFirstError(SpyFailureHandler.kt:25)
+	at com.adevinta.android.barista.internal.PerformActionKt.performActionOnView(PerformAction.kt:50)
+	at com.adevinta.android.barista.internal.PerformActionKt.performAction(PerformAction.kt:26)
+	at com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn(BaristaClickInteractions.kt:19)
+	at com.adevinta.android.barista.interaction.BaristaDialogInteractions.clickDialogPositiveButton(BaristaDialogInteractions.java:8)
+	at com.futsch1.medtimer.TagTest.tagHandling(TagTest.kt:65)
+	... 40 trimmed
+Caused by: androidx.test.espresso.NoMatchingViewException: No views in hierarchy found matching: ((view has effective visibility &lt;VISIBLE&gt; and view.getGlobalVisibleRect() to return non-empty rectangle) and view.getId() is &lt;16908313/android:id/button1&gt;)
+
+View Hierarchy:
++&gt;DecorView{id=-1, visibility=VISIBLE, width=720, height=320, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params={(0,0)(fillxwrap) gr=CENTER sim={adjust=pan} ty=APPLICATION fmt=TRANSLUCENT wanim=0x103030a
+  fl=DIM_BEHIND SPLIT_TOUCH HARDWARE_ACCELERATED
+  pfl=EDGE_TO_EDGE_ENFORCED
+  bhv=DEFAULT
+  fitTypes=STATUS_BARS NAVIGATION_BARS CAPTION_BAR
+  frameRateBoostOnTouch=true
+  dvrrWindowFrameRateHint=true}, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=1} 
+|
++-&gt;FrameLayout{id=-1, visibility=VISIBLE, width=656, height=256, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=32.0, y=32.0, child-count=2} 
+|
++--&gt;FrameLayout{id=16908290, res-name=content, visibility=VISIBLE, width=656, height=256, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=1} 
+|
++---&gt;LinearLayout{id=-1, visibility=VISIBLE, width=656, height=256, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2} 
+|
++----&gt;RecyclerView{id=2131297013, res-name=tags, visibility=VISIBLE, width=624, height=96, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=16.0, y=16.0, child-count=2} 
+|
++-----&gt;Chip{id=2131296996, res-name=tag, visibility=VISIBLE, width=205, height=96, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=com.google.android.flexbox.FlexboxLayoutManager$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=24.0, y=0.0, text=New tag, input-type=0, ime-target=false, has-links=false, is-checked=false} 
+|
++-----&gt;Chip{id=2131296996, res-name=tag, visibility=VISIBLE, width=250, height=96, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=com.google.android.flexbox.FlexboxLayoutManager$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=245.0, y=0.0, text=Another tag, input-type=0, ime-target=false, has-links=false, is-checked=false} 
+|
++----&gt;LinearLayout{id=-1, visibility=VISIBLE, width=624, height=128, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=16.0, y=112.0, child-count=3} 
+|
++-----&gt;MaterialButton{id=2131296354, res-name=addTag, visibility=VISIBLE, width=248, height=96, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=16.0, y=16.0, text=Add tag, input-type=0, ime-target=false, has-links=false, is-checked=false} 
+|
++-----&gt;Space{id=-1, visibility=INVISIBLE, width=168, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=264.0, y=16.0} 
+|
++-----&gt;MaterialButton{id=2131296796, res-name=ok, visibility=VISIBLE, width=176, height=96, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=432.0, y=16.0, text=OK, input-type=0, ime-target=false, has-links=false, is-checked=false} 
+|
++--&gt;ViewStub{id=16908747, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0} 
+	at androidx.test.espresso.NoMatchingViewException$Builder.build(NoMatchingViewException.java:185)
+	at androidx.test.espresso.base.ViewFinderImpl.getView(ViewFinderImpl.java:86)
+	at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:258)
+	at androidx.test.espresso.ViewInteraction.access$300(ViewInteraction.java:70)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:193)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:182)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at android.os.Handler.handleCallback(Handler.java:959)
+	at android.os.Handler.dispatchMessage(Handler.java:100)
+	at android.os.Looper.loopOnce(Looper.java:232)
+	at android.os.Looper.loop(Looper.java:317)
+	at android.app.ActivityThread.main(ActivityThread.java:8705)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:580)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.TestDataAndDeleteAndManualDoseTest" tests="1" failures="0" errors="0" skipped="0" time="10.159" timestamp="2026-10-12T18:53:58" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="testDataAndDeleteAndManualDoseTest" classname="com.futsch1.medtimer.TestDataAndDeleteAndManualDoseTest" time="10.159" />
+  </testsuite>
+</testsuites>

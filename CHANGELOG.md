@@ -7,7 +7,7 @@ All notable changes to this fork of MedTimer are documented here. Upstream relea
 ### Platform
 - Target Android 17: `compileSdk` and `targetSdk` 35 → **37**; `minSdk` stays **28** (Android 9).
 - Toolchain: Gradle 8.11.1 → 9.8.1, Android Gradle Plugin 8.9.0 → 9.4.1 (built-in Kotlin), Kotlin 2.1.10 → 2.4.21, Room 2.6.1 → 2.8.5, Navigation 2.8.9 → 2.10.2, JaCoCo 0.8.15.
-- Dependencies: AppCompat 1.8.0, Material 1.14.0, core-ktx 1.19.1, WorkManager 2.12.0, lifecycle-viewmodel-ktx 2.11.0, ConstraintLayout 2.2.2, AndroidX test libraries (junit 1.3.0, espresso 3.7.0, runner/rules 1.7.0, orchestrator 1.6.1, uiautomator 2.4.0).
+- Dependencies: AppCompat 1.8.0, Material 1.14.0, core-ktx 1.19.1, WorkManager 2.12.0, lifecycle-viewmodel-ktx 2.11.0, ConstraintLayout 2.2.2, AndroidX test libraries (junit 1.3.0, runner/rules 1.7.0, orchestrator 1.6.1, uiautomator 2.4.0). Espresso stays at 3.6.1: 3.7.0 keeps the debug-only `Export` looper idling resource busy and hangs every instrumented test.
 
 ### Changed
 - Theme attribute `colorPrimary` is now resolved through `androidx.appcompat.R.attr.colorPrimary` (Material 1.14 no longer exports it from its own R class). No visual change intended.

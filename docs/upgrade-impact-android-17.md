@@ -25,7 +25,8 @@ Sources read (fetched 2026-10-12 from developer.android.com, saved offline durin
 | Navigation Safe Args | 2.8.9 | **2.10.2** | Latest stable; needed for the AGP 9 variant API. |
 | Robolectric | 4.14.1 | **4.17** | Maven Central has `android-all-instrumented` `17-robolectric-15733970-i7` (SDK 37 jar), so 4.17 can run tests against API 37 when `@Config(sdk=...)` is raised. |
 | JaCoCo | Gradle default | **0.8.15** (`jacoco { toolVersion }`) | Needed for class files produced by newer Kotlin/Java toolchains. |
-| JUnit Jupiter / Mockito / jazzer | 5.12.0 / 5.16.0 / 0.24.0 | bump as required by the toolchain / lint | GradleDependency lint errors cover these. |
+| JUnit Jupiter / Mockito / jazzer | 5.12.0 / 5.16.0 / 0.24.0 | unchanged | not flagged by lint. |
+| Espresso (core/contrib/idling) | 3.6.1 | **3.6.1 kept** | 3.7.0 was tried: `LooperIdlingResource` for the debug-only `Export` HandlerThread (`OptionsMenu.java:163`) never becomes idle and every instrumented test hangs; reverted with evidence (see test-evidence.md). Open item. |
 | `tech.apter…robolectric-extension-gradle-plugin` 0.9.0 | present | **kept (0.9.0)** | Latest on the plugin portal (checked 2026-10-12); configures and runs the JUnit 5 + Robolectric tests under AGP 9.4.1 / Gradle 9.8.1. |
 | `com.github.triplet.play` 3.12.1 | present, unused in CI | **4.1.1** | 3.12.1 fails under AGP 9 (`BaseAppModuleExtension does not exist`); 4.1.1 configures. Never executed (no credentials, "no publishing"). |
 | `org.sonarqube` 5.1.0.4882 | present, optional CI step | **removed on this branch** | Lint `NewerVersionAvailable` flags 5.1.0.4882; 7.5.0.8588 fails to configure under AGP 9 (`Could not create task :app:sonarResolver - No Android variant found for project app`). Non-essential; CI step removed too. Open item for the maintainers. |

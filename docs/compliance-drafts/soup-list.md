@@ -40,7 +40,7 @@
 | com.github.AppIntro:AppIntro (JitPack) | 6.3.1 | 6.3.1 | onboarding |
 | com.kizitonwose.calendar:view | 2.6.2 | 2.6.2 | calendar |
 | com.maltaisn:icondialog | 3.3.0 | 3.3.0 | icon picker |
-| androidx.test.espresso:espresso-idling-resource, espresso.idling:idling-concurrent | 3.6.1 | 3.7.0 | idling resources shipped in app |
+| androidx.test.espresso:espresso-idling-resource, espresso.idling:idling-concurrent | 3.6.1 | 3.6.1 (3.7.0 tried: LooperIdlingResource never idle, tests hang) | idling resources shipped in app |
 | com.google.android.flexbox:flexbox | 3.0.0 | 3.0.0 | layouts |
 | androidx.biometric:biometric | 1.1.0 | 1.1.0 | app lock (IMP-54) |
 | com.android.tools:desugar_jdk_libs (coreLibraryDesugaring) | 2.1.5 | 2.1.5 | java.time on minSdk 28 |
@@ -55,7 +55,7 @@
 | org.robolectric:robolectric | 4.14.1 | see test-evidence |
 | com.code-intelligence:jazzer-junit | 0.24.0 | 0.24.0 |
 | androidx.test.ext:junit | 1.2.1 | 1.3.0 |
-| androidx.test.espresso:espresso-core / espresso-contrib | 3.6.1 | 3.7.0 |
+| androidx.test.espresso:espresso-core / espresso-contrib | 3.6.1 | 3.6.1 (3.7.0 hangs the suite) |
 | androidx.test:rules | 1.6.1 | 1.7.0 |
 | androidx.test:runner | 1.6.2 | 1.7.0 |
 | androidx.test:orchestrator | 1.5.1 | 1.6.1 |
