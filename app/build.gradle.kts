@@ -1,9 +1,8 @@
 plugins {
     id("com.android.application")
     id("androidx.room")
-    id("com.github.triplet.play") version "3.12.1"
+    id("com.github.triplet.play") version "4.1.1"
     id("androidx.navigation.safeargs")
-    id("org.jetbrains.kotlin.android")
     id("jacoco")
     //noinspection GradleDependency: Version 6 crashes with an error in apache.commons.compress
     id("org.sonarqube") version "5.1.0.4882"
@@ -17,6 +16,7 @@ room {
 android {
     namespace = "com.futsch1.medtimer"
     compileSdk = 35
+    buildToolsVersion = "37.0.0"
 
     defaultConfig {
         applicationId = "com.futsch1.medtimer"
@@ -67,13 +67,16 @@ android {
         animationsDisabled = true
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     lint {
         abortOnError = true
         warningsAsErrors = true
         disable.add("IconLocation")
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
     }
 }
 
