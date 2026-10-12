@@ -11,6 +11,10 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
+jacoco {
+    toolVersion = "0.8.15"
+}
+
 kotlin {
     compilerOptions {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
@@ -200,6 +204,32 @@ android {
         "**/*Args.*",
         "**/*Directions.*"
     )
+
+    // Unit-test-only coverage report (no device needed); same class exclusions as the combined report
+    tasks.register<JacocoReport>("jacocoUnitTestReport") {
+        dependsOn(unitTests)
+        group = "Reporting"
+        description = "Execute JVM unit tests and generate a Jacoco coverage report"
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+            csv.required.set(true)
+        }
+        sourceDirectories.setFrom(layout.projectDirectory.dir("src/main/java"))
+        classDirectories.setFrom(
+            files(
+                fileTree(layout.buildDirectory.dir("intermediates/javac/debug")) {
+                    exclude(exclusions)
+                },
+                fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/debug")) {
+                    exclude(exclusions)
+                }
+            ))
+        executionData.setFrom(
+            files(
+                fileTree(layout.buildDirectory.dir("outputs/unit_test_code_coverage/debugUnitTest")) { include("*.exec") }
+            ))
+    }
 
     // Register a JacocoReport task for code coverage analysis
     tasks.register<JacocoReport>("JacocoDebugCodeCoverage") {
