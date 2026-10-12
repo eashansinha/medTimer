@@ -121,10 +121,31 @@ SurfaceFlinger crash-loop (`Assertion failed: !rcEnc->featureInfo()->hasReadColo
 `surfaceflinger`, followed by a `FATAL EXCEPTION` in `com.google.android.apps.nexuslauncher` — not in MedTimer).
 Android 17 UI behaviour therefore has to come from the CI run (§7) or a human on a real device/desktop emulator.
 
-## 7. CI on API 37
+## 7. CI on API 37 (GitHub Actions, `.github/workflows/test.yml`) — actual results
 
-`.github/workflows/test.yml` now starts the instrumented tests on `target_api_level: 37` (commit `062beda9`).
-Run URL and outcome: **see the PR description / final hand-back** — recorded only after the run exists; not guessed.
+The workflow now targets `api-level: "37.0"` with `reactivecircus/android-emulator-runner` v2.38.0 and a 6 GB AVD disk
+(`disk-size: 6144M`, disk size in the AVD cache key). Four runs were executed on PR #3
+(https://github.com/eashansinha/medTimer/pull/3/checks):
+
+| Run (commit) | Result (job `test`) | What happened |
+|---|---|---|
+| 1 (`f1325ed7`, action v2.33.0, `api-level: 37`) | **failed** before boot | `sdkmanager --install 'platforms;android-37'` → "Failed to find package": the SDK publishes Android 17 as `platforms;android-37.0`; v2.33.0 only accepts integer API levels |
+| 2 (`321ddbd0`, v2.38.0, `37.0`) — https://github.com/eashansinha/medTimer/actions/runs/38257747466 | **failed** | API 37 emulator booted in 66 s; `connectedDebugAndroidTest` could not install the APK: `Requested internal only, but not enough space`, `DELETE_FAILED_INTERNAL_ERROR`, gfxstream `Failed to find ColorBuffer` errors in the emulator log |
+| 3 (`5f6e3a56`, + `disk-size: 6144M`) | superseded by run 4 (same change + cache key) | — |
+| 4 (`832cfd1a`) | **failed** | API 37 emulator booted (72 s / 33 s), `./gradlew packageDebug` BUILD SUCCESSFUL, then the first `adb shell input keyevent 3` returned `cmd: Can't find service: input` — `system_server` was down, i.e. the same headless API 37 instability (gfxstream / SurfaceFlinger) seen on the local VM |
+
+**Conclusion (honest):** the API 37 CI job did **not** produce Android 17 instrumented-test evidence. The headless
+API 37 Google-APIs x86_64 image is not stable under `-gpu swiftshader_indirect` on GitHub's runners either. The job is
+left at API 37 so the failure is visible; options for a human: pin a newer system-image revision / emulator channel
+when available, use a hardware-accelerated runner, or run the Android 17 suite on a physical device/Firebase Test Lab
+(`firebaseTest.yml` exists in the repo).
+
+What CI **did** verify on the same commits: `compatibilityTest.yml` (unchanged, matrix API 28 and API 34 ×
+medium_phone/medium_tablet) ran the full instrumented suite against the targetSdk-37 build — **4/4 jobs passed**;
+`build.yml` passed. Pre-existing/unrelated failures: `dependency-review` ("Dependency review is not supported on this
+repository … Dependency graph" is disabled in the repo settings) and CodeQL `Analyze (java-kotlin)` (runs
+`./gradlew build`, which includes lint; the baseline `main` already failed lint with 19 `GradleDependency` errors,
+the branch with 9 — see §3).
 
 ## 8. What was NOT verified, and why
 
