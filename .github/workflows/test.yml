@@ -78,12 +78,13 @@ jobs:
       - name: Android lint
         run: ./gradlew lint
 
-      - name: SonarQube
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        if: ${{ env.SONAR_TOKEN != '' }}
-        run: ./gradlew sonar
+      # WIP: org.sonarqube plugin disabled under AGP 9 ("No Android variant found")
+      # - name: SonarQube
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   if: ${{ env.SONAR_TOKEN != '' }}
+      #   run: ./gradlew sonar
 
       - uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: always()

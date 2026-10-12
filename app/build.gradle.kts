@@ -1,12 +1,11 @@
 plugins {
     id("com.android.application")
     id("androidx.room")
-    id("com.github.triplet.play") version "3.12.1"
+    id("com.github.triplet.play") version "4.1.1"
     id("androidx.navigation.safeargs")
-    id("org.jetbrains.kotlin.android")
     id("jacoco")
-    //noinspection GradleDependency: Version 6 crashes with an error in apache.commons.compress
-    id("org.sonarqube") version "5.1.0.4882"
+    // WIP: org.sonarqube fails under AGP 9 ("No Android variant found"); disabled together with the CI sonar step
+    // id("org.sonarqube") version "5.1.0.4882"
     id("tech.apter.junit5.jupiter.robolectric-extension-gradle-plugin") version "0.9.0"
 }
 
@@ -16,13 +15,13 @@ room {
 
 android {
     namespace = "com.futsch1.medtimer"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.futsch1.medtimer"
         minSdk = 28
         multiDexEnabled = true
-        targetSdk = 35
+        targetSdk = 37
         versionCode = 105
         versionName = "1.16.5"
         base.archivesName = "MedTimer"
@@ -67,9 +66,6 @@ android {
         animationsDisabled = true
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     lint {
         abortOnError = true
         warningsAsErrors = true
@@ -87,7 +83,7 @@ dependencies {
     val workRuntimeVersion = "2.10.0"
     val coreKtxVersion = "1.15.0"
     val lifecycleViewmodelKtxVersion = "2.8.7"
-    val roomVersion = "2.6.1"
+    val roomVersion = "2.8.5"
     val colorPickerViewVersion = "3.1.0"
     val simplyPDFVersion = "2.1.1"
     val gsonVersion = "2.12.1"
@@ -176,6 +172,7 @@ java {
 tasks.withType<JavaCompile> {
     options.compilerArgs.addAll(listOf("-Xlint:unchecked", "-Xlint:deprecation"))
 }
+/* WIP: sonar disabled with the org.sonarqube plugin
 sonar {
     properties {
         property("sonar.projectKey", "Futsch1_medTimer")
@@ -189,6 +186,7 @@ sonar {
         )
     }
 }
+*/
 
 tasks.withType(Test::class) {
     configure<JacocoTaskExtension> {
@@ -235,7 +233,7 @@ android {
                 fileTree(layout.buildDirectory.dir("intermediates/javac/")) {
                     exclude(exclusions)
                 },
-                fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/")) {
+                fileTree(layout.buildDirectory.dir("intermediates/built_in_kotlinc/")) {
                     exclude(exclusions)
                 }
             ))
