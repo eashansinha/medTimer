@@ -48,6 +48,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- EE-30 / IMP-07 (Safer Intents): explicit notification-action intents built in
+                 ReminderProcessor.getVariableAmountActionIntent / getCustomSnoozeActionIntent must match a
+                 filter of this activity on Android 16+/17. -->
+            <intent-filter>
+                <action android:name="VARIABLE_AMOUNT" />
+                <action android:name="CUSTOM_SNOOZE" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MedTimerAppIntro"
@@ -120,6 +127,8 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="com.futsch1.medtimer.WIDGET_UPDATE" />
+                <!-- EE-30 / IMP-07: action sent by RescheduleWork.updateNextReminderWidget -->
+                <action android:name="com.futsch1.medtimer.NEXT_REMINDER_WIDGET_UPDATE" />
             </intent-filter>
 
         </receiver>

@@ -16,7 +16,10 @@ changes per ticket.
   API 35 emulator (`LooperIdlingResource-*-Export` never idle, 15/21 failures); the remaining 9 lint errors are
   these test-library versions and are recorded, not suppressed.
 - IMP-07 (Android 16/17 Safer Intents): `com.futsch1.medTimer.SNOOZE_ACTION` is now declared in the
-  `ReminderProcessor` receiver intent filter. No other reminder behaviour change.
+  `ReminderProcessor` receiver intent filter; `MainActivity` declares `VARIABLE_AMOUNT` / `CUSTOM_SNOOZE` (custom
+  notification actions) and `WidgetUpdateReceiver` declares `com.futsch1.medtimer.NEXT_REMINDER_WIDGET_UPDATE`.
+  Manifest-only; no other reminder behaviour change.
+- CI: the SonarQube step in `test.yml` is commented out while the plugin is disabled.
 - Tests: 35 new JVM tests (DST / month-boundary / cyclic scheduling, snooze bounds, exact-alarm policy, repeat
   limits, boot-receiver rescheduling, notification-action intents + manifest filter). 56 → 91 tests.
 - CI: instrumented tests run on an API 37 emulator (`.github/workflows/test.yml`).

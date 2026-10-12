@@ -126,4 +126,44 @@ public class ReminderProcessorIntentUnitTest {
             assertTrue(declared.contains(action), "Action " + action + " produced by ReminderProcessor is not declared in its manifest intent filter (Safer Intents)");
         }
     }
+
+    @Test
+    public void test_mainActivityAndWidgetReceiverActionsDeclaredInManifestFilter() throws Exception {
+        Element root = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(findManifest()).getDocumentElement();
+        Set<String> activityActions = declaredActions(root, "activity", "MainActivity");
+        Set<String> widgetReceiverActions = declaredActions(root, "receiver", "WidgetUpdateReceiver");
+
+        List<String> producedForMainActivity = List.of(
+                ReminderProcessor.getVariableAmountActionIntent(context, 1, "2").getAction(),
+                ReminderProcessor.getCustomSnoozeActionIntent(context, 1, 1, 1).getAction());
+        for (String action : producedForMainActivity) {
+            assertTrue(activityActions.contains(action), "Action " + action + " targets MainActivity but is not declared in its manifest intent filter (Safer Intents)");
+        }
+        assertTrue(widgetReceiverActions.contains("com.futsch1.medtimer.NEXT_REMINDER_WIDGET_UPDATE"),
+                "RescheduleWork.updateNextReminderWidget action is not declared in the WidgetUpdateReceiver intent filter (Safer Intents)");
+    }
+
+    private static File findManifest() {
+        File manifest = new File("src/main/AndroidManifest.xml");
+        if (!manifest.exists()) {
+            manifest = new File("app/src/main/AndroidManifest.xml");
+        }
+        assertTrue(manifest.exists(), "AndroidManifest.xml not found from " + new File(".").getAbsolutePath());
+        return manifest;
+    }
+
+    private static Set<String> declaredActions(Element root, String tag, String componentSuffix) {
+        NodeList components = root.getElementsByTagName(tag);
+        Set<String> declared = new HashSet<>();
+        for (int i = 0; i < components.getLength(); i++) {
+            Element component = (Element) components.item(i);
+            if (component.getAttribute("android:name").endsWith(componentSuffix)) {
+                NodeList actions = component.getElementsByTagName("action");
+                for (int j = 0; j < actions.getLength(); j++) {
+                    declared.add(((Element) actions.item(j)).getAttribute("android:name"));
+                }
+            }
+        }
+        return declared;
+    }
 }
