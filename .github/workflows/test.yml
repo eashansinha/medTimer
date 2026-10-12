@@ -11,7 +11,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      target_api_level: "37.0"
+      # 35 = newest API level whose emulator image is stable on the hosted runner.
+      # The android-37.0 image boots but its package service dies (adb install:
+      # "Can't find service: package"); move back to "37.0" once it is stable.
+      target_api_level: "35"
       profile: medium_phone
 
     steps:
