@@ -48,14 +48,20 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!-- EE-30 / IMP-07 (Safer Intents): explicit notification-action intents built in
-                 ReminderProcessor.getVariableAmountActionIntent / getCustomSnoozeActionIntent must match a
-                 filter of this activity on Android 16+/17. -->
+        </activity>
+        <!-- EE-30 / IMP-07 (Safer Intents): the custom-snooze / variable-amount notification actions are explicit
+             intents with their own actions. They target this non-exported alias of MainActivity whose filter
+             declares those actions, so they keep matching under strict intent resolution without exposing the
+             actions to other apps through the exported launcher activity. -->
+        <activity-alias
+            android:name=".NotificationActionActivity"
+            android:exported="false"
+            android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="VARIABLE_AMOUNT" />
                 <action android:name="CUSTOM_SNOOZE" />
             </intent-filter>
-        </activity>
+        </activity-alias>
         <activity
             android:name=".MedTimerAppIntro"
             android:theme="@style/Theme.MedTimer" />

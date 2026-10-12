@@ -128,16 +128,22 @@ public class ReminderProcessorIntentUnitTest {
     }
 
     @Test
-    public void test_mainActivityAndWidgetReceiverActionsDeclaredInManifestFilter() throws Exception {
+    public void test_notificationActivityAliasAndWidgetReceiverActionsDeclaredInManifestFilter() throws Exception {
         Element root = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(findManifest()).getDocumentElement();
-        Set<String> activityActions = declaredActions(root, "activity", "MainActivity");
+        Element alias = findComponent(root, "activity-alias", "NotificationActionActivity");
+        assertNotNull(alias, "activity-alias NotificationActionActivity missing from manifest");
+        assertEquals("false", alias.getAttribute("android:exported"), "notification action alias must not be exported");
+        assertEquals(".MainActivity", alias.getAttribute("android:targetActivity"));
+        Set<String> aliasActions = declaredActions(root, "activity-alias", "NotificationActionActivity");
         Set<String> widgetReceiverActions = declaredActions(root, "receiver", "WidgetUpdateReceiver");
 
-        List<String> producedForMainActivity = List.of(
-                ReminderProcessor.getVariableAmountActionIntent(context, 1, "2").getAction(),
-                ReminderProcessor.getCustomSnoozeActionIntent(context, 1, 1, 1).getAction());
-        for (String action : producedForMainActivity) {
-            assertTrue(activityActions.contains(action), "Action " + action + " targets MainActivity but is not declared in its manifest intent filter (Safer Intents)");
+        List<Intent> producedForAlias = List.of(
+                ReminderProcessor.getVariableAmountActionIntent(context, 1, "2"),
+                ReminderProcessor.getCustomSnoozeActionIntent(context, 1, 1, 1));
+        for (Intent intent : producedForAlias) {
+            assertEquals(ReminderProcessor.NOTIFICATION_ACTION_ACTIVITY, intent.getComponent().getClassName());
+            assertEquals(context.getPackageName(), intent.getComponent().getPackageName());
+            assertTrue(aliasActions.contains(intent.getAction()), "Action " + intent.getAction() + " targets NotificationActionActivity but is not declared in its manifest intent filter (Safer Intents)");
         }
         assertTrue(widgetReceiverActions.contains("com.futsch1.medtimer.NEXT_REMINDER_WIDGET_UPDATE"),
                 "RescheduleWork.updateNextReminderWidget action is not declared in the WidgetUpdateReceiver intent filter (Safer Intents)");
@@ -150,6 +156,17 @@ public class ReminderProcessorIntentUnitTest {
         }
         assertTrue(manifest.exists(), "AndroidManifest.xml not found from " + new File(".").getAbsolutePath());
         return manifest;
+    }
+
+    private static Element findComponent(Element root, String tag, String componentSuffix) {
+        NodeList components = root.getElementsByTagName(tag);
+        for (int i = 0; i < components.getLength(); i++) {
+            Element component = (Element) components.item(i);
+            if (component.getAttribute("android:name").endsWith(componentSuffix)) {
+                return component;
+            }
+        }
+        return null;
     }
 
     private static Set<String> declaredActions(Element root, String tag, String componentSuffix) {
