@@ -99,6 +99,15 @@ and `AutostartUnitTest` assertions are on mock interactions / WorkManager state 
 
 ### CI (GitHub Actions `Test` workflow, API 37.0 emulator)
 
-`.github/workflows/test.yml` runs `JacocoDebugCodeCoverage` (unit + instrumented) on `system-images;android-37.0;google_apis;x86_64`,
-records the app launch (`adb shell screenrecord`, 30 s) and uploads it as artifact `LaunchRecording-api37.0`; test reports are the `TestReports` artifact.
-Run URL and result: see the pull request description (the run was still in progress / result recorded there at hand-back; never guessed).
+`.github/workflows/test.yml` (`Test` workflow) runs `JacocoDebugCodeCoverage` (unit + instrumented) on `system-images;android-37.0;google_apis;x86_64`
+and would record the app launch (`adb shell screenrecord`, 30 s) as artifact `LaunchRecording-api37.0`; test reports are the `TestReports` artifact.
+
+**Observed result on the PR (job `test`, id 114792819524, run of commit `0993cb6c`, https://github.com/eashansinha/medTimer/pull/2/checks):** FAILED before any test ran.
+The API 37.0 emulator booted (`Boot completed in 28366 ms`), `./gradlew packageDebug` succeeded (`BUILD SUCCESSFUL in 3m 28s`), then
+`adb shell input keyevent 3` failed with `cmd: Can't find service: input` (exit code 20) and the emulator log shows repeated
+`ERROR | Failed to find ColorBuffer … Failed to bind to texture: invalid color buffer`, i.e. the guest system services died under the
+headless swiftshader emulator - the same gfxstream class of failure as on the development VM. Both artifacts were empty
+("No files were found"). **Android 17 UI/instrumented evidence is therefore still outstanding** (open item: run on a physical
+Android 17 device or a hardware-accelerated emulator). The `compatibilityTest.yml` matrix (API 28 and 34, phone and tablet) passed on the same PR;
+`Analyze (java-kotlin)` (`./gradlew build`) fails on the 5 remaining lint errors (it also fails on `main`, which has 19), and
+`dependency-review` fails with "Dependency review is not supported on this repository" (repository setting, not code).

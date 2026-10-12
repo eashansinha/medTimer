@@ -21,7 +21,7 @@ MedTimer `eashansinha/medTimer`, branch `devin/ee-29-android-17-upgrade` (code f
 | V7 | Edge-to-edge layout (IMP-01) | UI hierarchy bounds + screenshots | AVD `api35` | PASS - toolbar below status bar, bottom navigation above gesture bar | §6 |
 | V8 | Install on Android 17 | `adb install -r -g`, `dumpsys package` | AVD `api37` (API 37) headless | PASS - `Success`, `targetSdk=37 minSdk=28` | §6 |
 | V9 | Launch / UI on Android 17 (local) | `am start -W` | AVD `api37` | NOT VERIFIABLE on this VM - SurfaceFlinger assertion crash-loop (`hasReadColorBufferDma`), no screenshot possible | §6 |
-| V10 | Instrumented suite + launch recording on Android 17 | GitHub Actions `Test` workflow (`test.yml`, API 37.0 emulator) | CI | see PR description for the run URL and outcome (not guessed) | `LaunchRecording-api37.0`, `TestReports` artifacts |
+| V10 | Instrumented suite + launch recording on Android 17 | GitHub Actions `Test` workflow (`test.yml`, API 37.0 emulator) | CI | FAIL (environment) - emulator system services died after boot (`Can't find service: input`, ColorBuffer errors) before any test ran; artifacts empty | `docs/upgrade/test-evidence.md` §6, job 114792819524 |
 | V11 | Behavior-change fix IMP-39/50 can fail | run `NotificationSoundManagerUnitTest` against the previous implementation | VM | 4 tests, 1 failed (expected) | §4 |
 
 ## 3. Deviations and open items
@@ -32,7 +32,7 @@ MedTimer `eashansinha/medTimer`, branch `devin/ee-29-android-17-upgrade` (code f
 | D2 | Lint: 5 remaining errors (espresso 3.7.0, sonarqube 7.5.0.8588 available) | Documented reasons (hang / incompatibility); re-evaluate when fixed upstream |
 | D3 | Espresso 3.7.0 hangs `BasicUITest` on `LooperIdlingResource-*-Export` | Kept 3.6.1; root cause in the idling-resource registration of `OptionsMenu` to be analysed separately |
 | D4 | Android 17 "override DND" audio behaviour (IMP-39/50) | Logic hardened + unit-tested; OS-level effect needs a physical Android 17 device test |
-| D5 | Android 17 UI evidence only from CI | Local API 37 emulator cannot render; CI run URL in the PR |
+| D5 | No Android 17 UI / instrumented evidence | Local API 37 emulator cannot render and the CI API 37.0 emulator loses its system services; needs a physical Android 17 device or hardware-accelerated emulator |
 | D6 | "Needs runtime check" rows IMP-05, 17, 23, 25, 27, 33, 42, 48 | Partly exercised by the CI instrumented suite on API 37; no dedicated tests |
 | D7 | `InputMethodManager.SHOW_IMPLICIT` deprecated in API 37 (`NewReminderDialog.kt:57`) | Compiler warning only; no behavior change; follow-up |
 

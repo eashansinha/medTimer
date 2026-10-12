@@ -29,7 +29,7 @@ which changes affect a medication-reminder app and the two that required code ch
 
 * 67 JVM tests pass (56 before); unit-test coverage 15.94 % lines / 15.45 % branches (10.96 % / 12.72 % before).
 * Android 15 emulator: 21 instrumented tests, 20 pass, 1 pre-existing failure (`TagTest.tagHandling`); manual reminder flow recorded (`docs/upgrade/evidence/api35-demo.mp4`, screenshots).
-* Android 17 emulator: install succeeds (`targetSdk=37`); UI evidence from the CI run (link in the PR).
+* Android 17 emulator: install succeeds (`targetSdk=37`); no UI/instrumented evidence yet (local and CI headless emulators both lose rendering/system services).
 * Details: `docs/upgrade/test-evidence.md`, `docs/compliance-drafts/verification-report.md`.
 
 ## Known limitations
@@ -40,7 +40,7 @@ which changes affect a medication-reminder app and the two that required code ch
 
 ## Open items
 
-1. Review the CI run on API 37 (artifacts `LaunchRecording-api37.0`, `TestReports`) and re-run if the emulator image was unstable.
+1. Obtain Android 17 runtime evidence: the CI API 37.0 emulator run failed before tests (system services died, see `docs/upgrade/test-evidence.md` §6) - run the instrumented suite and launch recording on a physical Android 17 device or hardware-accelerated emulator.
 2. Device test of the DND-override sound on an Android 17 device (IMP-39/50).
 3. Investigate `OptionsMenu` idling-resource registration so Espresso 3.7.x can be adopted.
 4. Replace the deprecated `InputMethodManager.SHOW_IMPLICIT` usage.
