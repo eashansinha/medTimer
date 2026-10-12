@@ -1,0 +1,19 @@
+17:39:46 device sdk=35 time=17:39:45 app targetSdk=37 versionName=versionName=1.16.5
+17:39:49 am start: Status: ok TotalTime: 1210 
+17:39:54 tap Medicine @ 360 1472
+17:39:58 tap com.futsch1.medtimer:id/addMedicine @ 544 1320
+17:40:00 tap com.futsch1.medtimer:id/medicineName @ 360 794
+17:40:04 tap android:id/button1 @ 582 621
+17:40:08 tap com.futsch1.medtimer:id/addReminder @ 545 1320
+17:40:13 tap com.futsch1.medtimer:id/editAmount @ 360 572
+17:40:14 interval reminder: 2 minutes from now (device clock 17:40:13)
+17:40:16 tap com.futsch1.medtimer:id/intervalBased @ 360 505
+17:40:20 tap com.futsch1.medtimer:id/intervalMinutes @ 151 616
+17:40:23 tap com.futsch1.medtimer:id/editIntervalTime @ 360 504
+17:40:27 interval field: '2'
+17:40:30 dialog: interval=['2'] minutesChecked=['true']
+17:40:32 tap com.futsch1.medtimer:id/createReminder @ 463 1072
+17:40:36 tap Overview @ 120 1472
+17:40:38 alarm: RTC_WAKEUP #3: Alarm{ab597b6 type 0 origWhen 1791826920000 whenElapsed 4333941 com.futsch1.medtimer}
+17:42:23 notification: 
+17:42:37 done

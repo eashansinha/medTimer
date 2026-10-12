@@ -1,0 +1,15 @@
+18:56:11 api37 emulator started
+18:56:51 boot_completed=1 sdk=37 release=17
+18:56:53 install: 
+18:56:53 package: 
+18:56:53 am start: 
+18:56:59 surfaceflinger crashes in logcat: 14
+18:56:59 top activity:       topResumedActivity=ActivityRecord{139073777 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}
+18:57:02 screencap bytes: 72
+18:57:02 done
+18:57:19 retry install: Performing Streamed Install adb: failed to install /home/ubuntu/repos/medTimer/app/build/outputs/apk/debug/MedTimer-debug.apk: cmd: Can't find service: package  
+18:57:19 package: 
+18:57:19 am start: 
+18:57:23 top:       topResumedActivity=ActivityRecord{36336904 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivi; sf-crash-lines: 41
+18:57:37 install try 1: Performing Streamed Install Success 
+18:57:37 package: targetSdk=37 versionName=1.16.5  ; services: package=Service package: found

@@ -4,7 +4,7 @@ All files in this directory were produced on **API 35** (`api35` AVD, Google API
 
 ## How it was produced
 
-Script: [`api35-flow.sh`](api35-flow.sh) (every tap targets a node found in the live `uiautomator dump`; log in [`api35-flow.log`](api35-flow.log)). Preparation commands:
+Script: [`api35-flow.sh`](api35-flow.sh) (every tap targets a node found in the live `uiautomator dump`; log in [`api35-flow.txt`](api35-flow.txt)). Preparation commands:
 
 ```
 adb shell pm clear com.futsch1.medtimer
@@ -30,7 +30,7 @@ Flow: Overview → Medicine tab → *Add medicine* "Medicine A 500 mg" → *Add 
 | `api35-09-overview-after-reminder.png` | Overview after the reminder was raised |
 | `api35-demo.mp4` | 170 s screen recording of the whole flow |
 | `api35-notification-dumpsys.txt` | `adb shell dumpsys notification --noredact` excerpt proving the posted notification (title/text/channel) |
-| `api35-flow.log` | Timestamped log incl. `dumpsys alarm` line `RTC_WAKEUP … origWhen 1791826920000 com.futsch1.medtimer` = 17:42:00 UTC, i.e. the exact alarm scheduled 2 min ahead |
+| `api35-flow.txt` | Timestamped log incl. `dumpsys alarm` line `RTC_WAKEUP … origWhen 1791826920000 com.futsch1.medtimer` = 17:42:00 UTC, i.e. the exact alarm scheduled 2 min ahead |
 
 ## Instrumented suite
 

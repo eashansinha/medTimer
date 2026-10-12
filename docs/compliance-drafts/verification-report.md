@@ -53,7 +53,7 @@ Grants used before the flow (equivalent to what a user grants in Settings): `pm 
 
 | Item | Result |
 |---|---|
-| Local API 37 AVD install | API37_INSTALL_PLACEHOLDER |
+| Local API 37 AVD install | `adb install -r -g MedTimer-debug.apk` → `Success` on the API 37 AVD (Android 17, `ro.build.version.sdk=37`); `dumpsys package`: `targetSdk=37 versionName=1.16.5`. The first install attempt right after boot failed with `Can't find service: package` while SurfaceFlinger was crash-looping (41 crash lines in logcat, screencap empty) — log: `docs/upgrade/evidence/api37-install.txt`. No UI evidence from this device. |
 | Local API 37 UI | **not possible** on this VM (known SurfaceFlinger crash loop) — not faked |
 | GitHub Actions run (API 37 emulator: connected tests + unit tests + lint + app-launch recording) | CI_PLACEHOLDER |
 
