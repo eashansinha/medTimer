@@ -26,7 +26,7 @@ directories are `build/intermediates/javac/debug/compileDebugJavaWithJavac/class
 | Tests run | 56 | **79** (+23) |
 | Failures / errors / skipped | 0 / 0 / 0 | 0 / 0 / 0 |
 | Build | `BUILD SUCCESSFUL` | `BUILD SUCCESSFUL` |
-| Lint (`lintDebug`) | **FAILED**, 19 errors (`GradleDependency`) | **0 errors, 0 warnings** (dependencies updated; nothing suppressed) |
+| Lint (`lintDebug`) | **FAILED**, 19 errors (`GradleDependency`) | **4 errors** (`GradleDependency` for the 4 pinned Espresso artifacts, see §5); nothing suppressed |
 
 New tests (all JUnit 5 + `RobolectricExtension`, `@Config(sdk = [35])`, in
 `app/src/test/java/com/futsch1/medtimer/widgets/`):
@@ -101,7 +101,29 @@ covered by the API 37 instrumented run in CI and by the Android 17 analysis in
 `docs/upgrade-impact-android-17-widgets.md`, not by the JVM suite. **Open item**: move the test
 JVM to JDK 21 (and adapt the two tests above) to run the Robolectric suite on SDK 37.
 
-## 5. Instrumented tests and emulator
+## 5. Instrumented tests, Espresso pin and the remaining lint findings
 
-See `docs/upgrade/evidence/README.md` (API 35 emulator run, `connectedDebugAndroidTest`, API 37
-`adb install`) — filled in by the emulator step.
+```
+ANDROID_SERIAL=emulator-5554 ./gradlew --no-daemon connectedDebugAndroidTest --continue   # API 35
+```
+
+| Build | Instrumented tests (API 35) | Result |
+|---|---|---|
+| branch with Espresso 3.7.0 | 21 | 15 failed — all `LooperIdlingResource-NN-Export` idle timeouts |
+| `main` (Espresso 3.6.1), `BasicUITest` + `CalendarTest` only | 3 | 0 failed |
+| branch, only Espresso reverted to 3.6.1, `BasicUITest` | 2 | 0 failed |
+| **branch final (Espresso pinned 3.6.1)** | **21** | **0 failed** (16 min 37 s) |
+
+Espresso 3.7.0 is therefore pinned back to 3.6.1 (`app/build.gradle.kts`, with a comment). The
+consequence for lint:
+
+```
+./gradlew --no-daemon lintDebug
+# Lint found 4 errors: GradleDependency for espresso-core, espresso-contrib,
+# espresso-idling-resource, idling-concurrent (3.6.1 -> 3.7.0 available)
+```
+
+Baseline 19 → **4** `GradleDependency` errors, nothing suppressed, no `lint.xml`/baseline change.
+The 4 findings are the price of keeping the instrumented suite green; resolving them means fixing
+the app's debug-only `IdlingRegistry.registerLooperAsIdlingResource` usage for Espresso 3.7
+(open item). Full emulator evidence: `docs/upgrade/evidence/README.md`.

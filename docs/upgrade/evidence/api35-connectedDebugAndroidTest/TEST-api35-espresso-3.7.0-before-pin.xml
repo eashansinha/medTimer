@@ -1,0 +1,477 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="21" failures="15" errors="0" skipped="0" time="0.000" timestamp="2026-10-12T13:03:44" hostname="localhost">
+  <testsuite name="com.futsch1.medtimer.BasicUITest" tests="2" failures="1" errors="0" skipped="0" time="820.932" timestamp="2026-10-12T13:03:44" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="basicUITest" classname="com.futsch1.medtimer.BasicUITest" time="806.859">
+      <failure>com.adevinta.android.barista.internal.failurehandler.BaristaException: Could not perform action single click on view view.getId() is &lt;2131296713&gt;
+	at com.adevinta.android.barista.internal.failurehandler.SpyFailureHandler.resendFirstError(SpyFailureHandler.kt:25)
+	at com.adevinta.android.barista.internal.PerformActionKt.performActionOnView(PerformAction.kt:50)
+	at com.adevinta.android.barista.internal.PerformActionKt.performAction(PerformAction.kt:26)
+	at com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn(BaristaClickInteractions.kt:19)
+	at com.futsch1.medtimer.AndroidTestHelper.navigateTo(AndroidTestHelper.java:42)
+	at com.futsch1.medtimer.AndroidTestHelper.createMedicine(AndroidTestHelper.java:102)
+	at com.futsch1.medtimer.BasicUITest.basicUITest(BasicUITest.java:29)
+	... 40 trimmed
+Caused by: androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-97-Export] to become idle timed out
+	at androidx.test.espresso.IdlingPolicy.handleTimeout(IdlingPolicy.java:63)
+	at androidx.test.espresso.base.UiControllerImpl$5.resourcesHaveTimedOut(UiControllerImpl.java:421)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleTimeout(IdlingResourceRegistry.java:536)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleMessage(IdlingResourceRegistry.java:469)
+	at android.os.Handler.dispatchMessage(Handler.java:103)
+	at androidx.test.espresso.base.TestLooperManagerCompat.execute(TestLooperManagerCompat.java:121)
+	at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:128)
+	at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:513)
+	at androidx.test.espresso.base.UiControllerImpl.loopMainThreadUntilIdle(UiControllerImpl.java:434)
+	at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:257)
+	at androidx.test.espresso.ViewInteraction.-$$Nest$mdoPerform(Unknown Source:0)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:193)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:182)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at android.os.Handler.handleCallback(Handler.java:959)
+	at android.os.Handler.dispatchMessage(Handler.java:100)
+	at android.os.Looper.loopOnce(Looper.java:232)
+	at android.os.Looper.loop(Looper.java:317)
+	at android.app.ActivityThread.main(ActivityThread.java:8705)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:580)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+</failure>
+    </testcase>
+    <testcase name="menuHandlingTest" classname="com.futsch1.medtimer.BasicUITest" time="14.073" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.CalendarTest" tests="1" failures="1" errors="0" skipped="0" time="326.826" timestamp="2026-10-12T13:03:44" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="calendarTest" classname="com.futsch1.medtimer.CalendarTest" time="326.826">
+      <failure>androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-59-Export, LooperIdlingResource-80-Export] to become idle timed out
+	at dalvik.system.VMStack.getThreadStackTrace(Native Method)
+	at java.lang.Thread.getStackTrace(Thread.java:1841)
+	at androidx.test.espresso.base.EspressoExceptionHandler.handleSafely(EspressoExceptionHandler.java:34)
+	at androidx.test.espresso.base.EspressoExceptionHandler.handleSafely(EspressoExceptionHandler.java:26)
+	at androidx.test.espresso.base.DefaultFailureHandler$TypedFailureHandler.handle(DefaultFailureHandler.java:158)
+	at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:120)
+	at com.futsch1.medtimer.MyFailureHandler.handle(MyFailureHandler.java:48)
+	at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:385)
+	at androidx.test.espresso.ViewInteraction.desugaredPerform(ViewInteraction.java:212)
+	at androidx.test.espresso.ViewInteraction.perform(ViewInteraction.java:140)
+	at androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu(Espresso.java:277)
+	at com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.openOverflow(BaristaMenuClickInteractions.kt:78)
+	at com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.openMenu(BaristaMenuClickInteractions.kt:59)
+	at com.futsch1.medtimer.CalendarTest.calendarTest(CalendarTest.java:19)
+</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.ExportBackupTest" tests="2" failures="0" errors="0" skipped="0" time="18.540" timestamp="2026-10-12T13:03:44" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="testTriggerBackup" classname="com.futsch1.medtimer.ExportBackupTest" time="7.770" />
+    <testcase name="testTriggerExport" classname="com.futsch1.medtimer.ExportBackupTest" time="10.770" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.MedicineStockTest" tests="1" failures="1" errors="0" skipped="0" time="802.048" timestamp="2026-10-12T13:03:44" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="medicineStockTest" classname="com.futsch1.medtimer.MedicineStockTest" time="802.048">
+      <failure>com.adevinta.android.barista.internal.failurehandler.BaristaException: Could not perform action single click on view view.getId() is &lt;2131296713&gt;
+	at com.adevinta.android.barista.internal.failurehandler.SpyFailureHandler.resendFirstError(SpyFailureHandler.kt:25)
+	at com.adevinta.android.barista.internal.PerformActionKt.performActionOnView(PerformAction.kt:50)
+	at com.adevinta.android.barista.internal.PerformActionKt.performAction(PerformAction.kt:26)
+	at com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn(BaristaClickInteractions.kt:19)
+	at com.futsch1.medtimer.AndroidTestHelper.navigateTo(AndroidTestHelper.java:42)
+	at com.futsch1.medtimer.AndroidTestHelper.createMedicine(AndroidTestHelper.java:102)
+	at com.futsch1.medtimer.MedicineStockTest.medicineStockTest(MedicineStockTest.kt:30)
+	... 40 trimmed
+Caused by: androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-97-Export] to become idle timed out
+	at androidx.test.espresso.IdlingPolicy.handleTimeout(IdlingPolicy.java:63)
+	at androidx.test.espresso.base.UiControllerImpl$5.resourcesHaveTimedOut(UiControllerImpl.java:421)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleTimeout(IdlingResourceRegistry.java:536)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleMessage(IdlingResourceRegistry.java:469)
+	at android.os.Handler.dispatchMessage(Handler.java:103)
+	at androidx.test.espresso.base.TestLooperManagerCompat.execute(TestLooperManagerCompat.java:121)
+	at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:128)
+	at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:513)
+	at androidx.test.espresso.base.UiControllerImpl.loopMainThreadUntilIdle(UiControllerImpl.java:434)
+	at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:257)
+	at androidx.test.espresso.ViewInteraction.-$$Nest$mdoPerform(Unknown Source:0)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:193)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:182)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at android.os.Handler.handleCallback(Handler.java:959)
+	at android.os.Handler.dispatchMessage(Handler.java:100)
+	at android.os.Looper.loopOnce(Looper.java:232)
+	at android.os.Looper.loop(Looper.java:317)
+	at android.app.ActivityThread.main(ActivityThread.java:8705)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:580)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.NotificationTest" tests="6" failures="5" errors="0" skipped="0" time="2552.776" timestamp="2026-10-12T13:03:44" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="hiddenMedicineName" classname="com.futsch1.medtimer.NotificationTest" time="10.271" />
+    <testcase name="customSnooze" classname="com.futsch1.medtimer.NotificationTest" time="339.959">
+      <failure>androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-79-Export, LooperIdlingResource-82-Export] to become idle timed out
+	at dalvik.system.VMStack.getThreadStackTrace(Native Method)
+	at java.lang.Thread.getStackTrace(Thread.java:1841)
+	at androidx.test.espresso.base.EspressoExceptionHandler.handleSafely(EspressoExceptionHandler.java:34)
+	at androidx.test.espresso.base.EspressoExceptionHandler.handleSafely(EspressoExceptionHandler.java:26)
+	at androidx.test.espresso.base.DefaultFailureHandler$TypedFailureHandler.handle(DefaultFailureHandler.java:158)
+	at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:120)
+	at com.futsch1.medtimer.MyFailureHandler.handle(MyFailureHandler.java:48)
+	at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:385)
+	at androidx.test.espresso.ViewInteraction.desugaredPerform(ViewInteraction.java:212)
+	at androidx.test.espresso.ViewInteraction.perform(ViewInteraction.java:140)
+	at androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu(Espresso.java:277)
+	at com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.openOverflow(BaristaMenuClickInteractions.kt:78)
+	at com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.openMenu(BaristaMenuClickInteractions.kt:59)
+	at com.futsch1.medtimer.NotificationTest.customSnooze(NotificationTest.kt:222)
+</failure>
+    </testcase>
+    <testcase name="repeatingReminders" classname="com.futsch1.medtimer.NotificationTest" time="255.794">
+      <failure>androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-59-Export] to become idle timed out
+	at dalvik.system.VMStack.getThreadStackTrace(Native Method)
+	at java.lang.Thread.getStackTrace(Thread.java:1841)
+	at androidx.test.espresso.base.EspressoExceptionHandler.handleSafely(EspressoExceptionHandler.java:34)
+	at androidx.test.espresso.base.EspressoExceptionHandler.handleSafely(EspressoExceptionHandler.java:26)
+	at androidx.test.espresso.base.DefaultFailureHandler$TypedFailureHandler.handle(DefaultFailureHandler.java:158)
+	at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:120)
+	at com.futsch1.medtimer.MyFailureHandler.handle(MyFailureHandler.java:48)
+	at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:385)
+	at androidx.test.espresso.ViewInteraction.desugaredPerform(ViewInteraction.java:212)
+	at androidx.test.espresso.ViewInteraction.perform(ViewInteraction.java:140)
+	at androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu(Espresso.java:277)
+	at com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.openOverflow(BaristaMenuClickInteractions.kt:78)
+	at com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.openMenu(BaristaMenuClickInteractions.kt:59)
+	at com.futsch1.medtimer.NotificationTest.repeatingReminders(NotificationTest.kt:144)
+</failure>
+    </testcase>
+    <testcase name="notificationTest" classname="com.futsch1.medtimer.NotificationTest" time="809.600">
+      <failure>com.adevinta.android.barista.internal.failurehandler.BaristaException: Could not perform action single click on view view.getId() is &lt;2131296713&gt;
+	at com.adevinta.android.barista.internal.failurehandler.SpyFailureHandler.resendFirstError(SpyFailureHandler.kt:25)
+	at com.adevinta.android.barista.internal.PerformActionKt.performActionOnView(PerformAction.kt:50)
+	at com.adevinta.android.barista.internal.PerformActionKt.performAction(PerformAction.kt:26)
+	at com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn(BaristaClickInteractions.kt:19)
+	at com.futsch1.medtimer.AndroidTestHelper.navigateTo(AndroidTestHelper.java:42)
+	at com.futsch1.medtimer.AndroidTestHelper.createMedicine(AndroidTestHelper.java:102)
+	at com.futsch1.medtimer.NotificationTest.notificationTest(NotificationTest.kt:40)
+	... 40 trimmed
+Caused by: androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-74-Export] to become idle timed out
+	at androidx.test.espresso.IdlingPolicy.handleTimeout(IdlingPolicy.java:63)
+	at androidx.test.espresso.base.UiControllerImpl$5.resourcesHaveTimedOut(UiControllerImpl.java:421)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleTimeout(IdlingResourceRegistry.java:536)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleMessage(IdlingResourceRegistry.java:469)
+	at android.os.Handler.dispatchMessage(Handler.java:103)
+	at androidx.test.espresso.base.TestLooperManagerCompat.execute(TestLooperManagerCompat.java:121)
+	at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:128)
+	at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:513)
+	at androidx.test.espresso.base.UiControllerImpl.loopMainThreadUntilIdle(UiControllerImpl.java:434)
+	at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:257)
+	at androidx.test.espresso.ViewInteraction.-$$Nest$mdoPerform(Unknown Source:0)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:193)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:182)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at android.os.Handler.handleCallback(Handler.java:959)
+	at android.os.Handler.dispatchMessage(Handler.java:100)
+	at android.os.Looper.loopOnce(Looper.java:232)
+	at android.os.Looper.loop(Looper.java:317)
+	at android.app.ActivityThread.main(ActivityThread.java:8705)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:580)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+</failure>
+    </testcase>
+    <testcase name="variableAmount" classname="com.futsch1.medtimer.NotificationTest" time="801.254">
+      <failure>com.adevinta.android.barista.internal.failurehandler.BaristaException: Could not perform action single click on view view.getId() is &lt;2131296713&gt;
+	at com.adevinta.android.barista.internal.failurehandler.SpyFailureHandler.resendFirstError(SpyFailureHandler.kt:25)
+	at com.adevinta.android.barista.internal.PerformActionKt.performActionOnView(PerformAction.kt:50)
+	at com.adevinta.android.barista.internal.PerformActionKt.performAction(PerformAction.kt:26)
+	at com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn(BaristaClickInteractions.kt:19)
+	at com.futsch1.medtimer.AndroidTestHelper.navigateTo(AndroidTestHelper.java:42)
+	at com.futsch1.medtimer.AndroidTestHelper.createMedicine(AndroidTestHelper.java:102)
+	at com.futsch1.medtimer.NotificationTest.variableAmount(NotificationTest.kt:182)
+	... 40 trimmed
+Caused by: androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-59-Export, LooperIdlingResource-74-Export] to become idle timed out
+	at androidx.test.espresso.IdlingPolicy.handleTimeout(IdlingPolicy.java:63)
+	at androidx.test.espresso.base.UiControllerImpl$5.resourcesHaveTimedOut(UiControllerImpl.java:421)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleTimeout(IdlingResourceRegistry.java:536)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleMessage(IdlingResourceRegistry.java:469)
+	at android.os.Handler.dispatchMessage(Handler.java:103)
+	at androidx.test.espresso.base.TestLooperManagerCompat.execute(TestLooperManagerCompat.java:121)
+	at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:128)
+	at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:513)
+	at androidx.test.espresso.base.UiControllerImpl.loopMainThreadUntilIdle(UiControllerImpl.java:434)
+	at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:257)
+	at androidx.test.espresso.ViewInteraction.-$$Nest$mdoPerform(Unknown Source:0)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:193)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:182)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at android.os.Handler.handleCallback(Handler.java:959)
+	at android.os.Handler.dispatchMessage(Handler.java:100)
+	at android.os.Looper.loopOnce(Looper.java:232)
+	at android.os.Looper.loop(Looper.java:317)
+	at android.app.ActivityThread.main(ActivityThread.java:8705)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:580)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+</failure>
+    </testcase>
+    <testcase name="actionOnDismissedNotification" classname="com.futsch1.medtimer.NotificationTest" time="335.898">
+      <failure>androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-78-Export, LooperIdlingResource-93-Export] to become idle timed out
+	at dalvik.system.VMStack.getThreadStackTrace(Native Method)
+	at java.lang.Thread.getStackTrace(Thread.java:1841)
+	at androidx.test.espresso.base.EspressoExceptionHandler.handleSafely(EspressoExceptionHandler.java:34)
+	at androidx.test.espresso.base.EspressoExceptionHandler.handleSafely(EspressoExceptionHandler.java:26)
+	at androidx.test.espresso.base.DefaultFailureHandler$TypedFailureHandler.handle(DefaultFailureHandler.java:158)
+	at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:120)
+	at com.futsch1.medtimer.MyFailureHandler.handle(MyFailureHandler.java:48)
+	at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:385)
+	at androidx.test.espresso.ViewInteraction.desugaredPerform(ViewInteraction.java:212)
+	at androidx.test.espresso.ViewInteraction.perform(ViewInteraction.java:140)
+	at androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu(Espresso.java:277)
+	at com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.openOverflow(BaristaMenuClickInteractions.kt:78)
+	at com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.openMenu(BaristaMenuClickInteractions.kt:59)
+	at com.futsch1.medtimer.NotificationTest.actionOnDismissedNotification(NotificationTest.kt:84)
+</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.ReminderTest" tests="4" failures="3" errors="0" skipped="0" time="2446.778" timestamp="2026-10-12T13:03:44" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="reminderTypeTest" classname="com.futsch1.medtimer.ReminderTest" time="842.168">
+      <failure>com.adevinta.android.barista.internal.failurehandler.BaristaException: Could not perform action single click on view view.getId() is &lt;2131296713&gt;
+	at com.adevinta.android.barista.internal.failurehandler.SpyFailureHandler.resendFirstError(SpyFailureHandler.kt:25)
+	at com.adevinta.android.barista.internal.PerformActionKt.performActionOnView(PerformAction.kt:50)
+	at com.adevinta.android.barista.internal.PerformActionKt.performAction(PerformAction.kt:26)
+	at com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn(BaristaClickInteractions.kt:19)
+	at com.futsch1.medtimer.AndroidTestHelper.navigateTo(AndroidTestHelper.java:42)
+	at com.futsch1.medtimer.AndroidTestHelper.createMedicine(AndroidTestHelper.java:102)
+	at com.futsch1.medtimer.ReminderTest.reminderTypeTest(ReminderTest.java:156)
+	... 40 trimmed
+Caused by: androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-75-Export] to become idle timed out
+	at androidx.test.espresso.IdlingPolicy.handleTimeout(IdlingPolicy.java:63)
+	at androidx.test.espresso.base.UiControllerImpl$5.resourcesHaveTimedOut(UiControllerImpl.java:421)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleTimeout(IdlingResourceRegistry.java:536)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleMessage(IdlingResourceRegistry.java:469)
+	at android.os.Handler.dispatchMessage(Handler.java:103)
+	at androidx.test.espresso.base.TestLooperManagerCompat.execute(TestLooperManagerCompat.java:121)
+	at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:128)
+	at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:513)
+	at androidx.test.espresso.base.UiControllerImpl.loopMainThreadUntilIdle(UiControllerImpl.java:434)
+	at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:257)
+	at androidx.test.espresso.ViewInteraction.-$$Nest$mdoPerform(Unknown Source:0)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:193)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:182)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at android.os.Handler.handleCallback(Handler.java:959)
+	at android.os.Handler.dispatchMessage(Handler.java:100)
+	at android.os.Looper.loopOnce(Looper.java:232)
+	at android.os.Looper.loop(Looper.java:317)
+	at android.app.ActivityThread.main(ActivityThread.java:8705)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:580)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+</failure>
+    </testcase>
+    <testcase name="deleteLinkedReminderTest" classname="com.futsch1.medtimer.ReminderTest" time="14.824" />
+    <testcase name="editReminderTest" classname="com.futsch1.medtimer.ReminderTest" time="795.393">
+      <failure>com.adevinta.android.barista.internal.failurehandler.BaristaException: Could not perform action single click on view view.getId() is &lt;2131296713&gt;
+	at com.adevinta.android.barista.internal.failurehandler.SpyFailureHandler.resendFirstError(SpyFailureHandler.kt:25)
+	at com.adevinta.android.barista.internal.PerformActionKt.performActionOnView(PerformAction.kt:50)
+	at com.adevinta.android.barista.internal.PerformActionKt.performAction(PerformAction.kt:26)
+	at com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn(BaristaClickInteractions.kt:19)
+	at com.futsch1.medtimer.AndroidTestHelper.navigateTo(AndroidTestHelper.java:42)
+	at com.futsch1.medtimer.AndroidTestHelper.createMedicine(AndroidTestHelper.java:102)
+	at com.futsch1.medtimer.ReminderTest.editReminderTest(ReminderTest.java:231)
+	... 40 trimmed
+Caused by: androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-76-Export] to become idle timed out
+	at androidx.test.espresso.IdlingPolicy.handleTimeout(IdlingPolicy.java:63)
+	at androidx.test.espresso.base.UiControllerImpl$5.resourcesHaveTimedOut(UiControllerImpl.java:421)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleTimeout(IdlingResourceRegistry.java:536)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleMessage(IdlingResourceRegistry.java:469)
+	at android.os.Handler.dispatchMessage(Handler.java:103)
+	at androidx.test.espresso.base.TestLooperManagerCompat.execute(TestLooperManagerCompat.java:121)
+	at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:128)
+	at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:513)
+	at androidx.test.espresso.base.UiControllerImpl.loopMainThreadUntilIdle(UiControllerImpl.java:434)
+	at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:257)
+	at androidx.test.espresso.ViewInteraction.-$$Nest$mdoPerform(Unknown Source:0)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:193)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:182)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at android.os.Handler.handleCallback(Handler.java:959)
+	at android.os.Handler.dispatchMessage(Handler.java:100)
+	at android.os.Looper.loopOnce(Looper.java:232)
+	at android.os.Looper.loop(Looper.java:317)
+	at android.app.ActivityThread.main(ActivityThread.java:8705)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:580)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+</failure>
+    </testcase>
+    <testcase name="activeReminderTest" classname="com.futsch1.medtimer.ReminderTest" time="794.393">
+      <failure>com.adevinta.android.barista.internal.failurehandler.BaristaException: Could not perform action single click on view view.getId() is &lt;2131296713&gt;
+	at com.adevinta.android.barista.internal.failurehandler.SpyFailureHandler.resendFirstError(SpyFailureHandler.kt:25)
+	at com.adevinta.android.barista.internal.PerformActionKt.performActionOnView(PerformAction.kt:50)
+	at com.adevinta.android.barista.internal.PerformActionKt.performAction(PerformAction.kt:26)
+	at com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn(BaristaClickInteractions.kt:19)
+	at com.futsch1.medtimer.AndroidTestHelper.navigateTo(AndroidTestHelper.java:42)
+	at com.futsch1.medtimer.AndroidTestHelper.createMedicine(AndroidTestHelper.java:102)
+	at com.futsch1.medtimer.ReminderTest.activeReminderTest(ReminderTest.java:56)
+	... 40 trimmed
+Caused by: androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-89-Export] to become idle timed out
+	at androidx.test.espresso.IdlingPolicy.handleTimeout(IdlingPolicy.java:63)
+	at androidx.test.espresso.base.UiControllerImpl$5.resourcesHaveTimedOut(UiControllerImpl.java:421)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleTimeout(IdlingResourceRegistry.java:536)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleMessage(IdlingResourceRegistry.java:469)
+	at android.os.Handler.dispatchMessage(Handler.java:103)
+	at androidx.test.espresso.base.TestLooperManagerCompat.execute(TestLooperManagerCompat.java:121)
+	at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:128)
+	at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:513)
+	at androidx.test.espresso.base.UiControllerImpl.loopMainThreadUntilIdle(UiControllerImpl.java:434)
+	at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:257)
+	at androidx.test.espresso.ViewInteraction.-$$Nest$mdoPerform(Unknown Source:0)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:193)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:182)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at android.os.Handler.handleCallback(Handler.java:959)
+	at android.os.Handler.dispatchMessage(Handler.java:100)
+	at android.os.Looper.loopOnce(Looper.java:232)
+	at android.os.Looper.loop(Looper.java:317)
+	at android.app.ActivityThread.main(ActivityThread.java:8705)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:580)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.ScreenshotsTest" tests="1" failures="1" errors="0" skipped="0" time="339.665" timestamp="2026-10-12T13:03:44" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="screenshotsTest" classname="com.futsch1.medtimer.ScreenshotsTest" time="339.665">
+      <failure>androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-59-Export, LooperIdlingResource-81-Export] to become idle timed out
+	at dalvik.system.VMStack.getThreadStackTrace(Native Method)
+	at java.lang.Thread.getStackTrace(Thread.java:1841)
+	at androidx.test.espresso.base.EspressoExceptionHandler.handleSafely(EspressoExceptionHandler.java:34)
+	at androidx.test.espresso.base.EspressoExceptionHandler.handleSafely(EspressoExceptionHandler.java:26)
+	at androidx.test.espresso.base.DefaultFailureHandler$TypedFailureHandler.handle(DefaultFailureHandler.java:158)
+	at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:120)
+	at com.futsch1.medtimer.MyFailureHandler.handle(MyFailureHandler.java:48)
+	at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:385)
+	at androidx.test.espresso.ViewInteraction.desugaredPerform(ViewInteraction.java:212)
+	at androidx.test.espresso.ViewInteraction.perform(ViewInteraction.java:140)
+	at androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu(Espresso.java:277)
+	at com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.openOverflow(BaristaMenuClickInteractions.kt:78)
+	at com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.openMenu(BaristaMenuClickInteractions.kt:59)
+	at com.futsch1.medtimer.ScreenshotsTest.screenshotsTest(ScreenshotsTest.java:56)
+</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.TagTest" tests="3" failures="2" errors="0" skipped="0" time="1482.299" timestamp="2026-10-12T13:03:44" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="medicineVisibility" classname="com.futsch1.medtimer.TagTest" time="10.802" />
+    <testcase name="activateAndOverviewVisibility" classname="com.futsch1.medtimer.TagTest" time="744.019">
+      <failure>com.adevinta.android.barista.internal.failurehandler.BaristaException: Could not perform action single click on view view.getId() is &lt;2131296713&gt;
+	at com.adevinta.android.barista.internal.failurehandler.SpyFailureHandler.resendFirstError(SpyFailureHandler.kt:25)
+	at com.adevinta.android.barista.internal.PerformActionKt.performActionOnView(PerformAction.kt:50)
+	at com.adevinta.android.barista.internal.PerformActionKt.performAction(PerformAction.kt:26)
+	at com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn(BaristaClickInteractions.kt:19)
+	at com.futsch1.medtimer.AndroidTestHelper.navigateTo(AndroidTestHelper.java:42)
+	at com.futsch1.medtimer.AndroidTestHelper.createMedicine(AndroidTestHelper.java:102)
+	at com.futsch1.medtimer.TagTest.activateAndOverviewVisibility(TagTest.kt:113)
+	... 40 trimmed
+Caused by: androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-88-Export] to become idle timed out
+	at androidx.test.espresso.IdlingPolicy.handleTimeout(IdlingPolicy.java:63)
+	at androidx.test.espresso.base.UiControllerImpl$5.resourcesHaveTimedOut(UiControllerImpl.java:421)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleTimeout(IdlingResourceRegistry.java:536)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleMessage(IdlingResourceRegistry.java:469)
+	at android.os.Handler.dispatchMessage(Handler.java:103)
+	at androidx.test.espresso.base.TestLooperManagerCompat.execute(TestLooperManagerCompat.java:121)
+	at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:128)
+	at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:513)
+	at androidx.test.espresso.base.UiControllerImpl.loopMainThreadUntilIdle(UiControllerImpl.java:434)
+	at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:257)
+	at androidx.test.espresso.ViewInteraction.-$$Nest$mdoPerform(Unknown Source:0)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:193)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:182)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at android.os.Handler.handleCallback(Handler.java:959)
+	at android.os.Handler.dispatchMessage(Handler.java:100)
+	at android.os.Looper.loopOnce(Looper.java:232)
+	at android.os.Looper.loop(Looper.java:317)
+	at android.app.ActivityThread.main(ActivityThread.java:8705)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:580)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+</failure>
+    </testcase>
+    <testcase name="tagHandling" classname="com.futsch1.medtimer.TagTest" time="727.478">
+      <failure>com.adevinta.android.barista.internal.failurehandler.BaristaException: Could not perform action single click on view view.getId() is &lt;2131296713&gt;
+	at com.adevinta.android.barista.internal.failurehandler.SpyFailureHandler.resendFirstError(SpyFailureHandler.kt:25)
+	at com.adevinta.android.barista.internal.PerformActionKt.performActionOnView(PerformAction.kt:50)
+	at com.adevinta.android.barista.internal.PerformActionKt.performAction(PerformAction.kt:26)
+	at com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn(BaristaClickInteractions.kt:19)
+	at com.futsch1.medtimer.AndroidTestHelper.navigateTo(AndroidTestHelper.java:42)
+	at com.futsch1.medtimer.AndroidTestHelper.createMedicine(AndroidTestHelper.java:102)
+	at com.futsch1.medtimer.TagTest.tagHandling(TagTest.kt:27)
+	... 40 trimmed
+Caused by: androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-58-Export] to become idle timed out
+	at androidx.test.espresso.IdlingPolicy.handleTimeout(IdlingPolicy.java:63)
+	at androidx.test.espresso.base.UiControllerImpl$5.resourcesHaveTimedOut(UiControllerImpl.java:421)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleTimeout(IdlingResourceRegistry.java:536)
+	at androidx.test.espresso.base.IdlingResourceRegistry$Dispatcher.handleMessage(IdlingResourceRegistry.java:469)
+	at android.os.Handler.dispatchMessage(Handler.java:103)
+	at androidx.test.espresso.base.TestLooperManagerCompat.execute(TestLooperManagerCompat.java:121)
+	at androidx.test.espresso.base.Interrogator.loopAndInterrogate(Interrogator.java:128)
+	at androidx.test.espresso.base.UiControllerImpl.loopUntil(UiControllerImpl.java:513)
+	at androidx.test.espresso.base.UiControllerImpl.loopMainThreadUntilIdle(UiControllerImpl.java:434)
+	at androidx.test.espresso.ViewInteraction.doPerform(ViewInteraction.java:257)
+	at androidx.test.espresso.ViewInteraction.-$$Nest$mdoPerform(Unknown Source:0)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:193)
+	at androidx.test.espresso.ViewInteraction$1.call(ViewInteraction.java:182)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at android.os.Handler.handleCallback(Handler.java:959)
+	at android.os.Handler.dispatchMessage(Handler.java:100)
+	at android.os.Looper.loopOnce(Looper.java:232)
+	at android.os.Looper.loop(Looper.java:317)
+	at android.app.ActivityThread.main(ActivityThread.java:8705)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:580)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.TestDataAndDeleteAndManualDoseTest" tests="1" failures="1" errors="0" skipped="0" time="332.687" timestamp="2026-10-12T13:03:44" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="testDataAndDeleteAndManualDoseTest" classname="com.futsch1.medtimer.TestDataAndDeleteAndManualDoseTest" time="332.687">
+      <failure>androidx.test.espresso.IdlingResourceTimeoutException: Wait for [LooperIdlingResource-91-Export] to become idle timed out
+	at dalvik.system.VMStack.getThreadStackTrace(Native Method)
+	at java.lang.Thread.getStackTrace(Thread.java:1841)
+	at androidx.test.espresso.base.EspressoExceptionHandler.handleSafely(EspressoExceptionHandler.java:34)
+	at androidx.test.espresso.base.EspressoExceptionHandler.handleSafely(EspressoExceptionHandler.java:26)
+	at androidx.test.espresso.base.DefaultFailureHandler$TypedFailureHandler.handle(DefaultFailureHandler.java:158)
+	at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:120)
+	at com.futsch1.medtimer.MyFailureHandler.handle(MyFailureHandler.java:48)
+	at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:385)
+	at androidx.test.espresso.ViewInteraction.desugaredPerform(ViewInteraction.java:212)
+	at androidx.test.espresso.ViewInteraction.perform(ViewInteraction.java:140)
+	at androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu(Espresso.java:277)
+	at com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.openOverflow(BaristaMenuClickInteractions.kt:78)
+	at com.adevinta.android.barista.interaction.BaristaMenuClickInteractions.openMenu(BaristaMenuClickInteractions.kt:59)
+	at com.futsch1.medtimer.TestDataAndDeleteAndManualDoseTest.testDataAndDeleteAndManualDoseTest(TestDataAndDeleteAndManualDoseTest.java:22)
+</failure>
+    </testcase>
+  </testsuite>
+</testsuites>
