@@ -11,7 +11,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      target_api_level: 37
+      target_api_level: "37.0"
       profile: medium_phone
 
     steps:
@@ -101,7 +101,7 @@ jobs:
       - uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: always()
         with:
-          name: AppLaunchRecording-api${{ env.target_api_level }}
+          name: AppLaunchRecording-api37
           path: |
             app/build/outputs/app-launch-api*.mp4
             app/build/outputs/app-launch-api*.png
