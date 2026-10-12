@@ -11,7 +11,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      target_api_level: 34
+      # Android 17 (API 37) system image: system-images;android-37.0;google_apis;x86_64
+      target_api_level: "37.0"
       profile: medium_phone
 
     steps:
@@ -47,6 +48,7 @@ jobs:
           target: google_apis
           profile: ${{ env.profile }}
           force-avd-creation: false
+          disk-size: 6144M
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
           disable-animations: true
           script: echo "Generated AVD snapshot for caching."
@@ -59,6 +61,7 @@ jobs:
           arch: x86_64
           target: google_apis
           force-avd-creation: false
+          disk-size: 6144M
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
           disable-animations: true
           script: |
@@ -68,10 +71,28 @@ jobs:
             adb shell input keyevent 3
             adb shell settings put secure long_press_timeout 1500
             adb uninstall com.futsch1.medtimer || true
-            EXIT_CODE=0 && ./gradlew JacocoDebugCodeCoverage || EXIT_CODE=$? && (adb pull /sdcard/googletest/test_outputfiles app/build/outputs/androidTest-results/ || true) && exit $EXIT_CODE
+            EXIT_CODE=0
+            ./gradlew JacocoDebugCodeCoverage || EXIT_CODE=$?
+            adb pull /sdcard/googletest/test_outputfiles app/build/outputs/androidTest-results/ || true
             adb install -g app/build/outputs/apk/debug/MedTimer-debug.apk
+            mkdir -p app/build/outputs/launch-recording
+            adb shell "screenrecord --time-limit 30 /sdcard/launch-api${{ env.target_api_level }}.mp4" &
+            sleep 2
+            adb shell am start -W -n com.futsch1.medtimer/.MainActivity
+            sleep 20
+            adb exec-out screencap -p > app/build/outputs/launch-recording/launch-api${{ env.target_api_level }}.png
+            wait
+            adb pull /sdcard/launch-api${{ env.target_api_level }}.mp4 app/build/outputs/launch-recording/ || true
             adb shell monkey -p com.futsch1.medtimer -v 5000 --throttle 10
+            exit $EXIT_CODE
           cores: 4
+
+      - uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        if: always()
+        with:
+          name: LaunchRecording-api${{ env.target_api_level }}
+          path: app/build/outputs/launch-recording
+          if-no-files-found: warn
 
       - name: Run fuzzing tests
         run: ./gradlew testDebug -Dfuzzing=true

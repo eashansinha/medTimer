@@ -6,6 +6,7 @@ import android.media.AudioManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.preference.PreferenceManager
 import com.futsch1.medtimer.preferences.PreferencesNames
 
@@ -30,6 +31,7 @@ class NotificationSoundManager(val context: Context) {
     }
 
     companion object {
+        private const val TAG = "NotificationSoundManager"
         private var pending = false
         private var pendingWasMuted = false
         private var scheduledRunnable: Runnable? = null
@@ -48,7 +50,14 @@ class NotificationSoundManager(val context: Context) {
                         AudioManager.ADJUST_UNMUTE,
                         0
                     )
-                    pendingWasMuted = true
+                    // Android 17 background audio hardening may silently ignore volume changes
+                    // from background work. Only schedule a restore (mute + vibrate) if the
+                    // unmute actually took effect, otherwise the ringer mode would be changed
+                    // without ever having been unmuted.
+                    pendingWasMuted = !audioManager.isStreamMute(AudioManager.STREAM_RING)
+                    if (!pendingWasMuted) {
+                        Log.w(TAG, "Unmuting the ring stream had no effect (background audio restriction?)")
+                    }
                 }
                 val policy = notificationManager.notificationPolicy
                 notificationManager.notificationPolicy = NotificationManager.Policy(

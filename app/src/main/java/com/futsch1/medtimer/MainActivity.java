@@ -11,12 +11,16 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.WindowManager;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -93,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void start() {
         setContentView(R.layout.activity_main);
+        applySystemBarInsets(findViewById(R.id.mainRoot));
         setupNavigation();
 
         ActivityIntentKt.dispatch(this, this.getIntent());
@@ -111,6 +116,17 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         this.getOnBackPressedDispatcher().addCallback(this, backPressedCallback);
+    }
+
+    // Android 16+ (targetSdk 36) ignores the edge-to-edge opt-out, so the root view pads itself
+    // for the system bars, display cutout and the keyboard instead of relying on fitsSystemWindows.
+    private static void applySystemBarInsets(View root) {
+        ViewCompat.setOnApplyWindowInsetsListener(root, (view, windowInsets) -> {
+            Insets bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+            Insets ime = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
+            view.setPadding(bars.left, bars.top, bars.right, Math.max(bars.bottom, ime.bottom));
+            return WindowInsetsCompat.CONSUMED;
+        });
     }
 
     private void setupNavigation() {
