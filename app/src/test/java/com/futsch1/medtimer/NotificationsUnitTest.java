@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.robolectric.Shadows.shadowOf;
 
 import android.app.Application;
 import android.app.Notification;
@@ -33,6 +32,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadow.api.Shadow;
+import org.robolectric.shadows.ShadowNotificationManager;
 import org.robolectric.shadows.ShadowPendingIntent;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -81,14 +82,14 @@ public class NotificationsUnitTest {
         reminderEvent.reminderId = REMINDER_ID;
         reminderEvent.reminderEventId = REMINDER_EVENT_ID;
         int notificationId = new Notifications(context).showNotification("08:00", medicine, reminder, reminderEvent);
-        Notification notification = shadowOf(notificationManager).getNotification(notificationId);
+        Notification notification = ((ShadowNotificationManager) Shadow.extract(notificationManager)).getNotification(notificationId);
         assertNotNull(notification);
         return notification;
     }
 
     private static ShadowPendingIntent shadow(PendingIntent pendingIntent) {
         assertNotNull(pendingIntent);
-        return shadowOf(pendingIntent);
+        return (ShadowPendingIntent) Shadow.extract(pendingIntent);
     }
 
     private static void assertImmutable(PendingIntent pendingIntent) {
