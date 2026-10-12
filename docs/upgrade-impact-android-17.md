@@ -129,7 +129,26 @@ Known AGP 9 migration items (from release notes): built-in Kotlin (`kotlin-andro
 
 ### Actual outcome (filled during Step 3)
 
-_To be completed._
+| Component | Planned | Actual on the branch | Evidence / reason |
+|---|---|---|---|
+| AGP | 9.4.0 | **9.4.1** (newest stable on Google Maven at implementation time; same compatibility row as 9.4.0) | commit `f5612b0b`; `./gradlew assembleDebug` BUILD SUCCESSFUL |
+| Gradle wrapper | 9.6.0 | **9.8.1** (9.6.0 built fine; lint `AndroidGradlePluginVersion` reported 9.8.1 as newest, build and lint unchanged on 9.8.1) | commits `f5612b0b`, `1935dff8` |
+| Kotlin | built-in | `org.jetbrains.kotlin.android` removed, `kotlin { compilerOptions { jvmTarget = JVM_17 } }`; no kapt in the project | commit `f5612b0b` |
+| Build tools | 37.0.0 | 37.0.0 (`buildToolsVersion`) | commit `f5612b0b` |
+| Room | validate | **2.8.5** (plugin + runtime + annotationProcessor compiler); generated code changed (`EntityInsertAdapter`, `RoomOpenDelegate`), schema unchanged | commit `7fb639b7`; unit + instrumented tests |
+| Navigation Safe Args | validate | **2.10.2** required: 2.8.9 fails under AGP 9 with "safeargs plugin must be used with android plugin"; navigation libraries bumped to match | commit `f5612b0b`, `7fb639b7` |
+| Play publisher | disable if blocking | **4.1.1** required: 3.12.1 fails with "Extension of type 'BaseAppModuleExtension' does not exist" (not disabled) | commit `f5612b0b` |
+| SonarQube | disable if blocking | **5.1.0.4882 kept** (applies fine). 7.5.0.8588 fails under AGP 9: "No Android variant found for project app" (also when applied after the Robolectric extension). Result: 1 remaining lint error `NewerVersionAvailable` (not suppressed) | `/tmp` logs quoted in `docs/upgrade/test-evidence.md` |
+| junit5 robolectric extension | disable if blocking | 0.9.0 works unchanged | `testDebugUnitTest` 67 tests |
+| Robolectric | validate SDK 37 | 4.14.1 kept: all Robolectric tests pin `@Config(sdk = 34)`, so `targetSdk 37` does not change the emulated SDK. Side effect of the API 37 stubs: `android.hardware.fingerprint.FingerprintManager` is absent from `android-37.0/android.jar`, so `Shadows.shadowOf(...)` overloads no longer compile in test code; new tests use `ShadowLooper.idleMainLooper` / `Shadow.extract` instead | compile error reproduced in `NotificationSoundManagerUnitTest` before the change |
+| JaCoCo | validate class dirs | Built-in Kotlin writes classes to `build/intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes`; `build/tmp/kotlin-classes` is stale → both JaCoCo tasks updated, new `jacocoUnitTestReport` task | commit `f7758774` |
+| Material | lint-driven bump | **1.14.0**: drops `colorPrimary` from its own R class (`nonTransitiveRClass`) → 4 call sites switched to `androidx.appcompat.R.attr.colorPrimary` | commit `2ba2b181` |
+| core-ktx | lint-driven bump | **1.19.1** requires compileSdk ≥ 37 (AAR metadata) → bumped after the compileSdk commit | commit `876c4513` |
+| Espresso | lint-driven bump | **3.6.1 kept**: with 3.7.0 the instrumented suite hangs in `BasicUITest` waiting for `LooperIdlingResource-*-Export` (the `OptionsMenu` HandlerThread looper registered as idling resource) although the thread is idle; reproduced twice on the API 35 emulator, passes with 3.6.1 | commit `3ecbb8b7` |
+| Other test libs | lint-driven bump | androidx.test junit 1.3.0, rules/runner 1.7.0, orchestrator 1.6.1, uiautomator 2.4.0 | commit `7fb639b7` |
+| Compiler warnings | — | new deprecation: `InputMethodManager.SHOW_IMPLICIT` (NewReminderDialog.kt:57) deprecated in API 37, no behavior change, left as is | `compileDebugKotlin` output |
+
+Lint: 19 errors on `main` (all `GradleDependency`) → **1 error** on the branch (`NewerVersionAvailable` for org.sonarqube, see above). No suppressions added, no tests removed.
 
 ## 3. Module / package impact map
 

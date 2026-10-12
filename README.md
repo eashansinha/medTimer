@@ -23,6 +23,27 @@ height="80">](https://play.google.com/store/apps/details?id=com.futsch1.medtimer
 Or download the latest APK from
 the [Releases Section](https://github.com/Futsch1/medTimer/releases/latest).
 
+## Build requirements and supported Android versions
+
+| | |
+|---|---|
+| Supported Android versions | Android 9 (API 28, `minSdk`) up to Android 17 (API 37, `targetSdk`/`compileSdk`) |
+| JDK | 17 |
+| Gradle | 9.8.1 (wrapper, `./gradlew`) |
+| Android Gradle Plugin | 9.4.1 (built-in Kotlin, no separate Kotlin Gradle plugin) |
+| Android SDK | platform `android-37.0`, build tools `37.0.0` |
+
+```bash
+./gradlew assembleDebug          # build
+./gradlew testDebugUnitTest      # JVM unit tests (JUnit 5 + Robolectric)
+./gradlew jacocoUnitTestReport   # unit-test coverage report (no device needed)
+./gradlew lintDebug              # Android lint (warnings are errors)
+./gradlew connectedDebugAndroidTest  # instrumented tests on a connected device/emulator
+```
+
+The Android 17 upgrade is documented in [docs/upgrade-impact-android-17.md](docs/upgrade-impact-android-17.md),
+[docs/upgrade/](docs/upgrade/) and [docs/architecture.md](docs/architecture.md).
+
 ## Description
 
 **Med reminders and history with full offline privacy**
