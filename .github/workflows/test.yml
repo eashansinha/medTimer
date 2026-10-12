@@ -71,10 +71,12 @@ jobs:
             EXIT_CODE=0
             ./gradlew JacocoDebugCodeCoverage || EXIT_CODE=$?
             adb pull /sdcard/googletest/test_outputfiles app/build/outputs/androidTest-results/ || true
+            INSTALLED=0
             for i in 1 2 3 4 5 6; do
-              adb shell service check package | grep -q "found" && adb install -g app/build/outputs/apk/debug/MedTimer-debug.apk && break
+              if adb shell service check package | grep -q "found" && adb install -g app/build/outputs/apk/debug/MedTimer-debug.apk; then INSTALLED=1; break; fi
               echo "package service not ready / install failed, retry $i"; sleep 15
             done
+            if [ "$INSTALLED" -ne 1 ]; then echo "APK install failed after retries"; exit 1; fi
             adb shell "screenrecord --time-limit 25 /sdcard/app-launch-api${{ env.target_api_level }}.mp4" &
             sleep 2
             adb shell am start -W -n com.futsch1.medtimer/.MainActivity
