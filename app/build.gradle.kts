@@ -103,7 +103,12 @@ dependencies {
     val jazzerVersion = "0.24.0"
 
     val androidTestJunitVersion = "1.3.0"
-    val androidTestEspressoVersion = "3.7.0"
+    // EE-31: pinned at 3.6.1. With Espresso 3.7.0 the LooperIdlingResources that OptionsMenu /
+    // LinkedReminderHandling register for their HandlerThreads never become idle on API 35, and
+    // 15 of 21 instrumented tests time out ("Wait for [LooperIdlingResource-NN-Export] to become idle").
+    // Lint therefore still reports 4 GradleDependency findings for the espresso artifacts (recorded,
+    // not suppressed); see docs/upgrade/test-evidence.md §5.
+    val androidTestEspressoVersion = "3.6.1"
     val androidTestRulesVersion = "1.7.0"
     val screengrabVersion = "2.1.1"
     val uiautomatorVersion = "2.4.0"
