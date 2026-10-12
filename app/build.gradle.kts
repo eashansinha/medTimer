@@ -4,8 +4,6 @@ plugins {
     id("com.github.triplet.play") version "4.1.1"
     id("androidx.navigation.safeargs")
     id("jacoco")
-    //noinspection GradleDependency: Version 6 crashes with an error in apache.commons.compress
-    id("org.sonarqube") version "5.1.0.4882"
     id("tech.apter.junit5.jupiter.robolectric-extension-gradle-plugin") version "0.9.0"
 }
 
@@ -178,20 +176,6 @@ java {
 tasks.withType<JavaCompile> {
     options.compilerArgs.addAll(listOf("-Xlint:unchecked", "-Xlint:deprecation"))
 }
-sonar {
-    properties {
-        property("sonar.projectKey", "Futsch1_medTimer")
-        property("sonar.organization", "futsch1")
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.gradle.skipCompile", "true")
-        property("sonar.android.lint.report", "build/reports/lint-results-debug.xml")
-        property(
-            "sonar.coverage.jacoco.xmlReportPaths",
-            "build/reports/jacoco/JacocoDebugCodeCoverage/JacocoDebugCodeCoverage.xml"
-        )
-    }
-}
-
 tasks.withType(Test::class) {
     configure<JacocoTaskExtension> {
         isIncludeNoLocationClasses = true
