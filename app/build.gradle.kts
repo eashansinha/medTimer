@@ -1,13 +1,13 @@
 plugins {
     id("com.android.application")
     id("androidx.room")
-    id("com.github.triplet.play") version "3.12.1"
+    id("com.github.triplet.play") version "4.1.1"
     id("androidx.navigation.safeargs")
-    id("org.jetbrains.kotlin.android")
     id("jacoco")
-    //noinspection GradleDependency: Version 6 crashes with an error in apache.commons.compress
-    id("org.sonarqube") version "5.1.0.4882"
     id("tech.apter.junit5.jupiter.robolectric-extension-gradle-plugin") version "0.9.0"
+    // EE-31: org.sonarqube (5.1.0.4882 and 7.3.0.8198) fails to apply with AGP 9.4 in this project
+    // ("No Android variant found for project app"); SonarCloud upload is not used on this fork, so the
+    // plugin and its `sonar {}` block are disabled on this branch. See docs/upgrade-impact-android-17-widgets.md IMP-T3.
 }
 
 room {
@@ -66,9 +66,6 @@ android {
         }
         animationsDisabled = true
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
-    }
-    kotlinOptions {
-        jvmTarget = "17"
     }
     lint {
         abortOnError = true
@@ -176,6 +173,7 @@ java {
 tasks.withType<JavaCompile> {
     options.compilerArgs.addAll(listOf("-Xlint:unchecked", "-Xlint:deprecation"))
 }
+/* EE-31: disabled with the org.sonarqube plugin (see plugins block)
 sonar {
     properties {
         property("sonar.projectKey", "Futsch1_medTimer")
@@ -189,6 +187,7 @@ sonar {
         )
     }
 }
+*/
 
 tasks.withType(Test::class) {
     configure<JacocoTaskExtension> {
