@@ -239,10 +239,7 @@ android {
                     exclude(exclusions)
                 }
             ))
-        executionData.setFrom(
-            files(
-                fileTree(layout.buildDirectory) { include("**/testDebugUnitTest.exec") }
-            ))
+        executionData.setFrom(layout.buildDirectory.file("outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec"))
     }
 
     // Register a JacocoReport task for code coverage analysis
