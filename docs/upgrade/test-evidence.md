@@ -105,3 +105,23 @@ Espresso note: with Espresso 3.7.0 (first attempt) every instrumented test waite
 ## 5. APK facts
 
 `unzip -l app/build/outputs/apk/debug/MedTimer-debug.apk | grep -c '\.so$'` → **0** native libraries before and after (IMP-11/18/36). `adb shell dumpsys package com.futsch1.medtimer` on API 35 after install: `minSdk=28 targetSdk=37`, `versionName=1.16.5`.
+
+## Independent API 35 end-to-end run (after PR creation)
+
+A separate testing agent repeated the manual flow on the `api35` AVD with the upgraded APK (targetSdk 37) and additionally
+exercised the notification **Taken** action and the Analysis screen. Result: all steps passed on **API 35**; crash buffer empty.
+Evidence: `docs/upgrade/evidence/api35-independent/` (13 screenshots, 183 s recording, dumpsys logs). API 37 runtime behaviour
+is not covered by this run.
+
+## CI status (GitHub Actions on PR #8)
+
+- The first run of the API 37 `test` job failed before the emulator started: `reactivecircus/android-emulator-runner` reported
+  `Failed to find package 'platforms;android-37'` and adb could not connect to port 5554. Cause: the Android 17 SDK packages are
+  published as `platforms;android-37.0` / `system-images;android-37.0;google_apis;x86_64`. Fixed by setting `target_api_level: "37.0"`
+  (commit `85d938f9`). Two review findings on the workflow script (recording unreachable after `exit`; monkey status hidden by `|| true`)
+  were fixed in `1ee3e976` and `2bd865d0`.
+- `dependency-review` fails on every run with `Dependency review is not supported on this repository. Please ensure that Dependency
+  graph is enabled ...`. `.github/workflows/dependency-review.yml` is unchanged on this branch (`git diff main...HEAD -- .github/workflows/`
+  touches only `test.yml`), so this is a repository-settings issue, not caused by the upgrade. Open item for the repo owner.
+- The API 37 emulator run (`test` job: connected tests, unit tests, lint, `AppLaunchRecording-api37` artifact) result is recorded in
+  `docs/compliance-drafts/verification-report.md` §6 and in the PR; if it had not finished at hand-back, that is stated there.

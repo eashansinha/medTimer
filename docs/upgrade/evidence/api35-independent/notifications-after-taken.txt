@@ -1,0 +1,4 @@
+    NotificationRecord(0x0f686b9f: pkg=com.futsch1.medtimer user=UserHandle{0} id=3 tag=null importance=3 key=0|com.futsch1.medtimer|3|null|10209: Notification(channel=3 shortcut=null contentView=null vibrate=null sound=null defaults=0 flags=0 color=0x00000000 category=reminder actions=2 vis=PRIVATE))
+      uid=10209 userId=0
+      opPkg=com.futsch1.medtimer
+      icon=Icon(typ=RESOURCE pkg=com.futsch1.medtimer id=0x7f08008a)

@@ -35,3 +35,24 @@ Flow: Overview → Medicine tab → *Add medicine* "Medicine A 500 mg" → *Add 
 ## Instrumented suite
 
 `./gradlew connectedDebugAndroidTest` results on API 35 (before/after) are in [`../test-evidence.md`](../test-evidence.md).
+
+## Independent second run — `api35-independent/` (API 35, upgraded APK targetSdk 37)
+
+A second, independent end-to-end pass was driven on the same `api35` AVD by a separate testing agent after PR #8 was opened
+(synthetic data only, local Room storage, adb-driven UI, one continuous `screenrecord`). All facts are from **API 35**.
+
+| File | What it shows |
+|---|---|
+| `install-launch.txt` | `adb install -r -g` → Success; `dumpsys package`: `targetSdk=37 minSdk=28`; `am start -W` → `Status: ok` |
+| `01-empty-overview.png` … `05-next-reminder.png` | Fresh Overview, "Medicine A 500 mg" created, interval dialog (every 2 minutes), reminder saved, Overview showing the upcoming 7:04 PM reminder |
+| `created-at.txt` / `second-notification-at.txt` | Reminder saved 2026-10-12T19:02:58Z; scheduled notification posted 2026-10-12T19:04:00Z (62 s later) |
+| `06-notification-shade.png` … `08-notification-actions.png` | Notification shade, expanded group, notification with the **Taken** action |
+| `notifications-initial.txt` / `notifications-posted.txt` / `notifications-after-taken.txt` | `dumpsys notification --noredact` before, at posting and after tapping Taken |
+| `alarm.txt` | `dumpsys alarm` entry for `com.futsch1.medtimer` |
+| `09-event-before-taken.png` / `10-event-taken.png` / `12-taken-persisted.png` | Overview event before Taken, after tapping Taken in the notification, and after force-stop + cold relaunch (state persisted) |
+| `13-regression-analysis.png` | Analysis screen: medicine count 1, Taken 100 % (charts use the changed `colorPrimary` attribute lookup) |
+| `crash-log.txt` | `logcat -b crash` — empty |
+| `api35-reminder-taken.mp4` | Continuous 183 s recording of the whole flow |
+
+Observed caveat: the interval dialog defaults its start time to the current minute, so a first reminder posts immediately after
+saving; the run therefore waited for the *next* scheduled notification (7:04 PM) before asserting delivery.
