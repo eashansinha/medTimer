@@ -5,14 +5,17 @@ import static com.futsch1.medtimer.ActivityCodes.EXTRA_REMINDER_EVENT_ID;
 import static com.futsch1.medtimer.ActivityCodes.EXTRA_REMINDER_ID;
 import static com.futsch1.medtimer.ActivityCodes.EXTRA_REMINDER_TIME;
 
+import android.app.AlarmManager;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkRequest;
@@ -28,14 +31,46 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Manifest receiver for system broadcasts that invalidate the currently scheduled alarm.
+ * <p>
+ * BOOT_COMPLETED / MY_PACKAGE_REPLACED: all alarms are gone, so the next reminder is rescheduled and
+ * notifications that were raised but not yet processed are restored.
+ * TIME_SET / TIMEZONE_CHANGED: the wall clock the reminder times refer to moved, so the next reminder
+ * is rescheduled.
+ * ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED (API 31+): the user granted "Alarms &amp; reminders"
+ * after the next reminder was scheduled inexactly, so it is rescheduled (RescheduleWork re-checks
+ * canScheduleExactAlarms()).
+ * <p>
+ * Only WorkManager work is enqueued here, never a foreground service, so the Android 14/15
+ * BOOT_COMPLETED foreground service restrictions do not apply.
+ */
 public class Autostart extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction() != null && (intent.getAction().equals("android.intent.action.BOOT_COMPLETED") || intent.getAction().equals("android.intent.action.MY_PACKAGE_REPLACED"))) {
+        String action = intent.getAction();
+        if (action == null) {
+            return;
+        }
+        if (isRestoreAction(action)) {
             Log.i("Autostart", "Requesting reschedule");
             ReminderProcessor.requestReschedule(context);
             Log.i("Autostart", "Restore reminders");
             restoreReminders(context);
+        } else if (isRescheduleOnlyAction(action)) {
+            Log.i("Autostart", "Requesting reschedule because of " + action);
+            ReminderProcessor.requestReschedule(context);
         }
+    }
+
+    static boolean isRestoreAction(@NonNull String action) {
+        return Intent.ACTION_BOOT_COMPLETED.equals(action) || Intent.ACTION_MY_PACKAGE_REPLACED.equals(action);
+    }
+
+    static boolean isRescheduleOnlyAction(@NonNull String action) {
+        return Intent.ACTION_TIME_CHANGED.equals(action)
+                || Intent.ACTION_TIMEZONE_CHANGED.equals(action)
+                || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                && AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED.equals(action));
     }
 
     private void restoreReminders(Context context) {

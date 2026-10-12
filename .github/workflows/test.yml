@@ -11,7 +11,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      target_api_level: 34
+      # API 35 emulator: the android-37.0 system image boots on hosted runners but its package service
+      # dies before `adb install`, so the instrumented run stays on the newest stable image that works.
+      target_api_level: 35
       profile: medium_phone
 
     steps:
@@ -78,12 +80,14 @@ jobs:
       - name: Android lint
         run: ./gradlew lint
 
-      - name: SonarQube
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        if: ${{ env.SONAR_TOKEN != '' }}
-        run: ./gradlew sonar
+      # SonarQube step disabled: the org.sonarqube Gradle plugin does not support AGP 9 yet
+      # (see app/build.gradle.kts); re-enable together with the plugin.
+      # - name: SonarQube
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   if: ${{ env.SONAR_TOKEN != '' }}
+      #   run: ./gradlew sonar
 
       - uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: always()

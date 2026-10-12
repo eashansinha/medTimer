@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +31,13 @@ import java.util.stream.Collectors;
 
 @SuppressLint("DefaultLocale")
 public class Notifications {
+    /**
+     * Non-exported {@code <activity-alias>} of {@link MainActivity} whose intent-filter declares the custom
+     * notification actions (CUSTOM_SNOOZE / VARIABLE_AMOUNT), so the activity PendingIntents keep matching
+     * under Android 16 strict intent resolution ("Safer Intents").
+     */
+    public static final String NOTIFICATION_ACTION_ACTIVITY = "com.futsch1.medtimer.NotificationActionActivity";
+
     private final Context context;
     private final SharedPreferences sharedPreferences;
 
@@ -143,7 +151,7 @@ public class Notifications {
 
     private PendingIntent getSnoozePendingIntent(Context context, int reminderId, int reminderEventId, int notificationId, int snoozeTime) {
         if (snoozeTime == -1) {
-            Intent snooze = ReminderProcessor.getCustomSnoozeActionIntent(context, reminderId, reminderEventId, notificationId);
+            Intent snooze = toNotificationActionActivity(ReminderProcessor.getCustomSnoozeActionIntent(context, reminderId, reminderEventId, notificationId));
             return PendingIntent.getActivity(context, notificationId, snooze, PendingIntent.FLAG_IMMUTABLE);
         } else {
             Intent snooze = ReminderProcessor.getSnoozeIntent(context, reminderId, reminderEventId, notificationId, snoozeTime);
@@ -153,12 +161,17 @@ public class Notifications {
 
     private PendingIntent getTakenPendingIntent(int notificationId, int reminderEventId, Reminder reminder) {
         if (reminder.variableAmount) {
-            Intent notifyTaken = ReminderProcessor.getVariableAmountActionIntent(context, reminderEventId, reminder.amount);
+            Intent notifyTaken = toNotificationActionActivity(ReminderProcessor.getVariableAmountActionIntent(context, reminderEventId, reminder.amount));
             return PendingIntent.getActivity(context, notificationId, notifyTaken, PendingIntent.FLAG_IMMUTABLE);
         } else {
             Intent notifyTaken = ReminderProcessor.getTakenActionIntent(context, reminderEventId);
             return PendingIntent.getBroadcast(context, notificationId, notifyTaken, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         }
+    }
+
+    private Intent toNotificationActionActivity(Intent activityIntent) {
+        activityIntent.setComponent(new ComponentName(context.getPackageName(), NOTIFICATION_ACTION_ACTIVITY));
+        return activityIntent;
     }
 
     public void showOutOfStockNotification(Medicine medicine) {
