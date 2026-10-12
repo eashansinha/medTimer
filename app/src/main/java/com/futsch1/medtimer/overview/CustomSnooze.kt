@@ -26,7 +26,7 @@ fun customSnoozeDialog(activity: AppCompatActivity, intent: Intent) {
         .inputType(InputType.TYPE_NUMBER_FLAG_SIGNED)
         .textSink { snoozeTime: String? ->
             val snoozeTimeInt = snoozeTime?.toIntOrNull()
-            if (snoozeTimeInt != null) {
+            if (snoozeTimeInt != null && snoozeTimeInt > 0) {
                 val snooze = ReminderProcessor.getSnoozeIntent(
                     activity,
                     reminderId,
