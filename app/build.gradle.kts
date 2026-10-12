@@ -15,7 +15,7 @@ room {
 
 android {
     namespace = "com.futsch1.medtimer"
-    compileSdk = 35
+    compileSdk = 37
     buildToolsVersion = "37.0.0"
 
     defaultConfig {
