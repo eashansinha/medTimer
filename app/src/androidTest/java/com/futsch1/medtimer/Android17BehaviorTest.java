@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import android.graphics.Rect;
 import android.view.View;
 
 import androidx.core.graphics.Insets;
@@ -69,13 +68,17 @@ public class Android17BehaviorTest extends BaseTestHelper {
                 failure.set("Toolbar top " + toolbarLocation[1] + " is above the status bar inset " + systemBars.top);
                 return;
             }
-            Rect visible = new Rect();
-            bottomNavigation.getGlobalVisibleRect(visible);
-            Rect windowVisible = new Rect();
-            root.getWindowVisibleDisplayFrame(windowVisible);
-            if (systemBars.bottom > 0 && visible.bottom > windowVisible.bottom - systemBars.bottom) {
-                failure.set("Bottom navigation bottom " + visible.bottom + " overlaps the navigation bar inset "
-                        + systemBars.bottom + " (window bottom " + windowVisible.bottom + ")");
+            // Under edge-to-edge the root view spans the whole screen, so the navigation bar occupies
+            // the bottom systemBars.bottom pixels of the root view.
+            int[] bottomNavigationLocation = new int[2];
+            bottomNavigation.getLocationOnScreen(bottomNavigationLocation);
+            int bottomNavigationBottom = bottomNavigationLocation[1] + bottomNavigation.getHeight();
+            int[] rootLocation = new int[2];
+            root.getLocationOnScreen(rootLocation);
+            int navigationBarTop = rootLocation[1] + root.getHeight() - systemBars.bottom;
+            if (bottomNavigationBottom > navigationBarTop) {
+                failure.set("Bottom navigation bottom " + bottomNavigationBottom + " overlaps the navigation bar starting at "
+                        + navigationBarTop + " (inset " + systemBars.bottom + ")");
             }
         });
         assertEquals(null, failure.get());
