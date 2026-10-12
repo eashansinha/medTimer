@@ -162,7 +162,7 @@ public class OverviewFragment extends Fragment {
     private View.OnTouchListener touchDivider(MaterialDivider resizeHandle) {
         ImageView dividerImageUp = fragmentOverview.findViewById(R.id.dividerImageUp);
         ImageView dividerImageDown = fragmentOverview.findViewById(R.id.dividerImageDown);
-        int colorDown = MaterialColors.getColor(resizeHandle, com.google.android.material.R.attr.colorPrimary);
+        int colorDown = MaterialColors.getColor(resizeHandle, androidx.appcompat.R.attr.colorPrimary);
         ColorStateList colorStateListDown = ColorStateList.valueOf(colorDown);
         int colorUp = MaterialColors.getColor(resizeHandle, com.google.android.material.R.attr.colorOutlineVariant);
         ColorStateList colorStateListUp = ColorStateList.valueOf(colorUp);

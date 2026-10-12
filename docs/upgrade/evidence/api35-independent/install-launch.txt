@@ -1,0 +1,14 @@
+API level:
+35
+    versionCode=105 minSdk=28 targetSdk=37
+      android.permission.POST_NOTIFICATIONS
+        android.permission.POST_NOTIFICATIONS: granted=true, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+SCHEDULE_EXACT_ALARM: allow
+Starting: Intent { cmp=com.futsch1.medtimer/.MainActivity }
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+Status: ok
+LaunchState: UNKNOWN (0)
+Activity: com.futsch1.medtimer/.MainActivity
+TotalTime: 0
+WaitTime: 3
+Complete

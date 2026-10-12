@@ -1,12 +1,9 @@
 plugins {
     id("com.android.application")
     id("androidx.room")
-    id("com.github.triplet.play") version "3.12.1"
+    id("com.github.triplet.play") version "4.1.1"
     id("androidx.navigation.safeargs")
-    id("org.jetbrains.kotlin.android")
     id("jacoco")
-    //noinspection GradleDependency: Version 6 crashes with an error in apache.commons.compress
-    id("org.sonarqube") version "5.1.0.4882"
     id("tech.apter.junit5.jupiter.robolectric-extension-gradle-plugin") version "0.9.0"
 }
 
@@ -14,15 +11,25 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
+jacoco {
+    toolVersion = "0.8.15"
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
+
 android {
     namespace = "com.futsch1.medtimer"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.futsch1.medtimer"
         minSdk = 28
         multiDexEnabled = true
-        targetSdk = 35
+        targetSdk = 37
         versionCode = 105
         versionName = "1.16.5"
         base.archivesName = "MedTimer"
@@ -67,9 +74,6 @@ android {
         animationsDisabled = true
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     lint {
         abortOnError = true
         warningsAsErrors = true
@@ -78,16 +82,16 @@ android {
 }
 
 dependencies {
-    val appcompatVersion = "1.7.0"
-    val materialVersion = "1.12.0"
-    val constraintLayoutVersion = "2.2.1"
-    val androidXNavigationVersion = "2.8.9"
+    val appcompatVersion = "1.8.0"
+    val materialVersion = "1.14.0"
+    val constraintLayoutVersion = "2.2.2"
+    val androidXNavigationVersion = "2.10.2"
     val preferenceKtxVersion = "1.2.1"
     val lifecycleExtensionsVersion = "2.2.0"
-    val workRuntimeVersion = "2.10.0"
-    val coreKtxVersion = "1.15.0"
-    val lifecycleViewmodelKtxVersion = "2.8.7"
-    val roomVersion = "2.6.1"
+    val workRuntimeVersion = "2.12.0"
+    val coreKtxVersion = "1.19.1"
+    val lifecycleViewmodelKtxVersion = "2.11.0"
+    val roomVersion = "2.8.5"
     val colorPickerViewVersion = "3.1.0"
     val simplyPDFVersion = "2.1.1"
     val gsonVersion = "2.12.1"
@@ -105,13 +109,13 @@ dependencies {
     val robolectricVersion = "4.14.1"
     val jazzerVersion = "0.24.0"
 
-    val androidTestJunitVersion = "1.2.1"
+    val androidTestJunitVersion = "1.3.0"
     val androidTestEspressoVersion = "3.6.1"
-    val androidTestRulesVersion = "1.6.1"
+    val androidTestRulesVersion = "1.7.0"
     val screengrabVersion = "2.1.1"
-    val uiautomatorVersion = "2.3.0"
-    val androidTestRunnerVersion = "1.6.2"
-    val androidTestOrchestratorVersion = "1.5.1"
+    val uiautomatorVersion = "2.4.0"
+    val androidTestRunnerVersion = "1.7.0"
+    val androidTestOrchestratorVersion = "1.6.1"
     val baristaVersion = "4.3.0"
 
     val desugarJdkVersion = "2.1.5"
@@ -176,20 +180,6 @@ java {
 tasks.withType<JavaCompile> {
     options.compilerArgs.addAll(listOf("-Xlint:unchecked", "-Xlint:deprecation"))
 }
-sonar {
-    properties {
-        property("sonar.projectKey", "Futsch1_medTimer")
-        property("sonar.organization", "futsch1")
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.gradle.skipCompile", "true")
-        property("sonar.android.lint.report", "build/reports/lint-results-debug.xml")
-        property(
-            "sonar.coverage.jacoco.xmlReportPaths",
-            "build/reports/jacoco/JacocoDebugCodeCoverage/JacocoDebugCodeCoverage.xml"
-        )
-    }
-}
-
 tasks.withType(Test::class) {
     configure<JacocoTaskExtension> {
         isIncludeNoLocationClasses = true
@@ -215,6 +205,32 @@ android {
         "**/*Directions.*"
     )
 
+    // Unit-test-only coverage report (no device needed); same class exclusions as the combined report
+    tasks.register<JacocoReport>("jacocoUnitTestReport") {
+        dependsOn(unitTests)
+        group = "Reporting"
+        description = "Execute JVM unit tests and generate a Jacoco coverage report"
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+            csv.required.set(true)
+        }
+        sourceDirectories.setFrom(layout.projectDirectory.dir("src/main/java"))
+        classDirectories.setFrom(
+            files(
+                fileTree(layout.buildDirectory.dir("intermediates/javac/debug")) {
+                    exclude(exclusions)
+                },
+                fileTree(layout.buildDirectory.dir("intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes")) {
+                    exclude(exclusions)
+                }
+            ))
+        executionData.setFrom(
+            files(
+                fileTree(layout.buildDirectory.dir("outputs/unit_test_code_coverage/debugUnitTest")) { include("*.exec") }
+            ))
+    }
+
     // Register a JacocoReport task for code coverage analysis
     tasks.register<JacocoReport>("JacocoDebugCodeCoverage") {
         // Depend on unit tests and Android tests tasks
@@ -235,7 +251,7 @@ android {
                 fileTree(layout.buildDirectory.dir("intermediates/javac/")) {
                     exclude(exclusions)
                 },
-                fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/")) {
+                fileTree(layout.buildDirectory.dir("intermediates/built_in_kotlinc/")) {
                     exclude(exclusions)
                 }
             ))

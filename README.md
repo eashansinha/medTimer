@@ -82,6 +82,28 @@ MedTimer is a free app without adds.
 See the [use cases documentation](doc/UseCases.md) for more details on how to use the app and
 the specific use cases it can satisfy.
 
+## Building
+
+| Requirement | Version |
+|---|---|
+| JDK | 17 |
+| Gradle | 9.8.1 (wrapper, `./gradlew`) |
+| Android Gradle Plugin | 9.4.1 (built-in Kotlin, Kotlin 2.4.21) |
+| Android SDK platform | API 37 (`compileSdk = 37`, `targetSdk = 37`) |
+| SDK Build-Tools | ≥ 36.0.0 |
+
+```
+./gradlew assembleDebug            # APK: app/build/outputs/apk/debug/MedTimer-debug.apk
+./gradlew testDebugUnitTest        # JVM / Robolectric tests
+./gradlew jacocoUnitTestReport     # unit-test coverage (app/build/reports/jacoco/jacocoUnitTestReport)
+./gradlew lintDebug                # lint (warnings are errors)
+./gradlew connectedDebugAndroidTest  # instrumented tests on a connected device/emulator
+```
+
+### Supported Android versions
+
+MedTimer runs on Android 9 (API 28, `minSdk`) up to Android 17 (API 37, `targetSdk`). Exact reminder alarms require the *Alarms & reminders* permission on Android 12+ and notifications require the notification permission on Android 13+; both are requested in-app.
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) for details on how to contribute.

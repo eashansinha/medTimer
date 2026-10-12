@@ -1,0 +1,16 @@
+    RTC_WAKEUP #2: Alarm{19dfad6 type 0 origWhen 1791831840000 whenElapsed 191702 com.futsch1.medtimer}
+      tag=*walarm*:com.futsch1.medTimer.REMINDER_ACTION
+      type=RTC_WAKEUP origWhen=2026-10-12 19:04:00.000 window=0 exactAllowReason=permission repeatInterval=0 count=0 flags=0x5
+      policyWhenElapsed: requester=+54s184ms app_standby=-2s218ms device_idle=-- battery_saver=-2s218ms
+      whenElapsed=+54s184ms maxWhenElapsed=+54s184ms
+      operation=PendingIntent{a353157: PendingIntentRecord{df8b444 com.futsch1.medtimer broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #3: Alarm{a69a92d type 3 origWhen 205026 whenElapsed 205026 com.google.android.gms}
+      tag=*alarm*:com.google.android.gms.vision.DEPENDENCY
+      type=ELAPSED origWhen=+1m7s508ms window=+1m0s0ms repeatInterval=0 count=0 flags=0x0
+--
+          type=RTC_WAKEUP tag=*walarm*:com.futsch1.medTimer.REMINDER_ACTION 
+          policyWhenElapsed: requester=+54s184ms app_standby=-6s593ms device_idle=-- battery_saver=-6s593ms
+  
+  Top Alarms:
+    +140ms running, 0 wakeups, 3 alarms: 1000:android
