@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="21" failures="0" errors="0" skipped="0" time="0.000" timestamp="2026-10-12T13:28:31" hostname="localhost">
+  <testsuite name="com.futsch1.medtimer.BasicUITest" tests="2" failures="0" errors="0" skipped="0" time="30.485" timestamp="2026-10-12T13:28:31" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="basicUITest" classname="com.futsch1.medtimer.BasicUITest" time="13.836" />
+    <testcase name="menuHandlingTest" classname="com.futsch1.medtimer.BasicUITest" time="16.649" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.CalendarTest" tests="1" failures="0" errors="0" skipped="0" time="11.158" timestamp="2026-10-12T13:28:31" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="calendarTest" classname="com.futsch1.medtimer.CalendarTest" time="11.158" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.ExportBackupTest" tests="2" failures="0" errors="0" skipped="0" time="21.272" timestamp="2026-10-12T13:28:31" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="testTriggerBackup" classname="com.futsch1.medtimer.ExportBackupTest" time="9.571" />
+    <testcase name="testTriggerExport" classname="com.futsch1.medtimer.ExportBackupTest" time="11.701" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.MedicineStockTest" tests="1" failures="0" errors="0" skipped="0" time="28.353" timestamp="2026-10-12T13:28:31" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="medicineStockTest" classname="com.futsch1.medtimer.MedicineStockTest" time="28.353" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.NotificationTest" tests="6" failures="0" errors="0" skipped="0" time="699.922" timestamp="2026-10-12T13:28:31" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="hiddenMedicineName" classname="com.futsch1.medtimer.NotificationTest" time="11.100" />
+    <testcase name="customSnooze" classname="com.futsch1.medtimer.NotificationTest" time="129.815" />
+    <testcase name="repeatingReminders" classname="com.futsch1.medtimer.NotificationTest" time="26.189" />
+    <testcase name="notificationTest" classname="com.futsch1.medtimer.NotificationTest" time="322.745" />
+    <testcase name="variableAmount" classname="com.futsch1.medtimer.NotificationTest" time="179.874" />
+    <testcase name="actionOnDismissedNotification" classname="com.futsch1.medtimer.NotificationTest" time="30.199" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.ReminderTest" tests="4" failures="0" errors="0" skipped="0" time="70.782" timestamp="2026-10-12T13:28:31" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="reminderTypeTest" classname="com.futsch1.medtimer.ReminderTest" time="23.060" />
+    <testcase name="deleteLinkedReminderTest" classname="com.futsch1.medtimer.ReminderTest" time="16.433" />
+    <testcase name="editReminderTest" classname="com.futsch1.medtimer.ReminderTest" time="9.887" />
+    <testcase name="activeReminderTest" classname="com.futsch1.medtimer.ReminderTest" time="21.402" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.ScreenshotsTest" tests="1" failures="0" errors="0" skipped="0" time="22.744" timestamp="2026-10-12T13:28:31" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="screenshotsTest" classname="com.futsch1.medtimer.ScreenshotsTest" time="22.744" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.TagTest" tests="3" failures="0" errors="0" skipped="0" time="43.052" timestamp="2026-10-12T13:28:31" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="medicineVisibility" classname="com.futsch1.medtimer.TagTest" time="11.168" />
+    <testcase name="activateAndOverviewVisibility" classname="com.futsch1.medtimer.TagTest" time="21.024" />
+    <testcase name="tagHandling" classname="com.futsch1.medtimer.TagTest" time="10.860" />
+  </testsuite>
+  <testsuite name="com.futsch1.medtimer.TestDataAndDeleteAndManualDoseTest" tests="1" failures="0" errors="0" skipped="0" time="12.865" timestamp="2026-10-12T13:28:31" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="testDataAndDeleteAndManualDoseTest" classname="com.futsch1.medtimer.TestDataAndDeleteAndManualDoseTest" time="12.865" />
+  </testsuite>
+</testsuites>

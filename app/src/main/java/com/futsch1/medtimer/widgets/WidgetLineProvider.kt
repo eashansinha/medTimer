@@ -23,23 +23,15 @@ fun interface WidgetLineProvider {
     ): String
 }
 
-class NextRemindersLineProvider(val context: Context) : WidgetLineProvider {
+class NextRemindersLineProvider(
+    val context: Context,
+    private val loadScheduledReminders: () -> List<ScheduledReminder> = {
+        loadScheduledRemindersFromRepository(context)
+    }
+) : WidgetLineProvider {
     lateinit var scheduledReminders: List<ScheduledReminder>
     private val job: Job = CoroutineScope(SupervisorJob()).launch {
-        val medicineRepository = MedicineRepository(context.applicationContext as Application?)
-        val medicinesWithReminders = medicineRepository.medicines
-        val reminderEvents = medicineRepository.allReminderEventsWithoutDeleted
-        val reminderScheduler = ReminderScheduler(object : ReminderScheduler.TimeAccess {
-            override fun systemZone(): ZoneId {
-                return ZoneId.systemDefault()
-            }
-
-            override fun localDate(): LocalDate {
-                return LocalDate.now()
-            }
-        })
-
-        scheduledReminders = reminderScheduler.schedule(medicinesWithReminders, reminderEvents)
+        scheduledReminders = loadScheduledReminders()
     }
 
     override fun getWidgetLine(
@@ -68,11 +60,15 @@ class NextRemindersLineProvider(val context: Context) : WidgetLineProvider {
     }
 }
 
-class LatestRemindersLineProvider(val context: Context) : WidgetLineProvider {
+class LatestRemindersLineProvider(
+    val context: Context,
+    private val loadReminderEvents: () -> List<ReminderEvent> = {
+        loadLatestReminderEventsFromRepository(context)
+    }
+) : WidgetLineProvider {
     lateinit var reminderEvents: List<ReminderEvent>
     private val job: Job = CoroutineScope(SupervisorJob()).launch {
-        val medicineRepository = MedicineRepository(context.applicationContext as Application?)
-        reminderEvents = medicineRepository.getLastDaysReminderEvents(7).reversed()
+        reminderEvents = loadReminderEvents()
     }
 
     override fun getWidgetLine(
@@ -118,4 +114,28 @@ fun getDayString(context: Context, timestamp: Long): String {
             timestamp
         ) + " "
     }
+}
+
+internal const val LATEST_REMINDERS_DAYS = 7
+
+internal fun loadScheduledRemindersFromRepository(context: Context): List<ScheduledReminder> {
+    val medicineRepository = MedicineRepository(context.applicationContext as Application?)
+    val medicinesWithReminders = medicineRepository.medicines
+    val reminderEvents = medicineRepository.allReminderEventsWithoutDeleted
+    val reminderScheduler = ReminderScheduler(object : ReminderScheduler.TimeAccess {
+        override fun systemZone(): ZoneId {
+            return ZoneId.systemDefault()
+        }
+
+        override fun localDate(): LocalDate {
+            return LocalDate.now()
+        }
+    })
+
+    return reminderScheduler.schedule(medicinesWithReminders, reminderEvents)
+}
+
+internal fun loadLatestReminderEventsFromRepository(context: Context): List<ReminderEvent> {
+    val medicineRepository = MedicineRepository(context.applicationContext as Application?)
+    return medicineRepository.getLastDaysReminderEvents(LATEST_REMINDERS_DAYS).reversed()
 }

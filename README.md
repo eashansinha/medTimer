@@ -77,6 +77,26 @@ Privacy & Offline Accessibility:
 
 MedTimer is a free app without adds.
 
+## Build requirements
+
+| Requirement | Version |
+|---|---|
+| JDK | 17 (compile target: Java 17) |
+| Android SDK | platform **37** (`compileSdk 37`, `targetSdk 37`), `minSdk 28` |
+| Gradle | 9.8.1 (wrapper, `./gradlew`) |
+| Android Gradle Plugin | 9.4.1 (built-in Kotlin 2.4.20) |
+| Room / Robolectric | 2.8.5 / 4.17 |
+
+```
+./gradlew assembleDebug            # debug APK: app/build/outputs/apk/debug/MedTimer-debug.apk
+./gradlew testDebugUnitTest        # JVM unit tests (JUnit 5 + Robolectric)
+./gradlew lintDebug                # lint (warnings are errors)
+./gradlew connectedDebugAndroidTest  # instrumented tests on a connected device/emulator
+```
+
+Note: running the Robolectric suite against Android SDK 36/37 sandboxes requires a JDK 21 test
+JVM; the suite currently runs on SDK ≤ 35 with JDK 17 (see `docs/upgrade/test-evidence.md`).
+
 ## Documentation
 
 See the [use cases documentation](doc/UseCases.md) for more details on how to use the app and

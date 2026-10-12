@@ -18,31 +18,36 @@ data class WidgetIds(
     val smallWidgetLayoutId: Int
 )
 
+/**
+ * Builds the RemoteViews for the home-screen widgets.
+ *
+ * Android 17 (targetSdk 37) enforces a hard limit on the Bitmaps/Icons carried in a RemoteViews
+ * parcel (1.5 x screen width x screen height x 4 bytes); exceeding it throws a fatal
+ * IllegalArgumentException from AppWidgetManager.updateAppWidget. The widgets therefore only use
+ * text and resource references (no setImageViewBitmap/setIcon); WidgetImplTest guards this.
+ */
 class WidgetImpl(
     val context: Context,
     private val lineProvider: WidgetLineProvider,
     private val widgetIds: WidgetIds
 ) {
+    companion object {
+        const val LARGE_WIDGET_LINES = 4
+        const val SMALL_WIDGET_LINES = 1
+    }
+
     internal fun updateAppWidget(
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int
     ) {
-        val containerView = RemoteViews(context.packageName, widgetIds.widgetLayoutId)
-        createNextReminderWidgetLines(containerView, 4)
-        containerView.setOnClickPendingIntent(
-            widgetIds.widgetId,
-            getOpenAppPendingIntent()
-        )
+        appWidgetManager.updateAppWidget(appWidgetId, buildRemoteViews())
+    }
 
-        val containerViewSmall =
-            RemoteViews(context.packageName, widgetIds.smallWidgetLayoutId)
-        createNextReminderWidgetLines(containerViewSmall, 1)
-        containerViewSmall.setOnClickPendingIntent(
-            widgetIds.widgetId,
-            getOpenAppPendingIntent()
-        )
+    internal fun buildRemoteViews(): RemoteViews {
+        val containerView = buildLargeRemoteViews()
+        val containerViewSmall = buildSmallRemoteViews()
 
-        val remoteViews = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val viewMapping: Map<SizeF, RemoteViews> = mapOf(
                 SizeF(110f, 50f) to containerViewSmall,
                 SizeF(110f, 150f) to containerView
@@ -51,7 +56,27 @@ class WidgetImpl(
         } else {
             containerViewSmall
         }
-        appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+    }
+
+    internal fun buildLargeRemoteViews(): RemoteViews {
+        val containerView = RemoteViews(context.packageName, widgetIds.widgetLayoutId)
+        createNextReminderWidgetLines(containerView, LARGE_WIDGET_LINES)
+        containerView.setOnClickPendingIntent(
+            widgetIds.widgetId,
+            getOpenAppPendingIntent()
+        )
+        return containerView
+    }
+
+    internal fun buildSmallRemoteViews(): RemoteViews {
+        val containerViewSmall =
+            RemoteViews(context.packageName, widgetIds.smallWidgetLayoutId)
+        createNextReminderWidgetLines(containerViewSmall, SMALL_WIDGET_LINES)
+        containerViewSmall.setOnClickPendingIntent(
+            widgetIds.widgetId,
+            getOpenAppPendingIntent()
+        )
+        return containerViewSmall
     }
 
     private fun getOpenAppPendingIntent(): PendingIntent? {

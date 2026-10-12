@@ -1,0 +1,48 @@
+API: 35
+    versionCode=105 minSdk=28 targetSdk=37
+    versionName=1.16.5
+
+Widget provider IDs:
+Widgets:
+  [0] id=6
+    host=HostId{user:0, app:10179, hostId:1024, pkg:com.google.android.apps.nexuslauncher}
+    provider=ProviderId{user:0, app:10229, cmp:ComponentInfo{com.futsch1.medtimer/com.futsch1.medtimer.widgets.NextRemindersWidgetProvider}}
+    host.callbacks=com.android.internal.appwidget.IAppWidgetHost$Stub$Proxy@80b2b70
+    views=android.widget.RemoteViews@c9dcee9
+  [1] id=7
+    host=HostId{user:0, app:10179, hostId:1024, pkg:com.google.android.apps.nexuslauncher}
+    provider=ProviderId{user:0, app:10229, cmp:ComponentInfo{com.futsch1.medtimer/com.futsch1.medtimer.widgets.LatestRemindersWidgetProvider}}
+    host.callbacks=com.android.internal.appwidget.IAppWidgetHost$Stub$Proxy@80b2b70
+    views=android.widget.RemoteViews@572476e
+ 
+Hosts:
+
+Automatic refresh and explicit broadcast:
+10-12 13:42:21.664 22846 22846 I MedTimerIndependentTest: BEFORE_SAVE_21_00
+10-12 13:42:21.786 20922 20938 D WM-SystemJobScheduler: Scheduling work ID 692eb1b6-b2af-4c52-8695-b6d0ea2c9616 (com.futsch1.medtimer.reminders.RescheduleWork), Job ID 9
+10-12 13:42:21.790 20922 20938 D WM-GreedyScheduler: Starting work for 692eb1b6-b2af-4c52-8695-b6d0ea2c9616
+10-12 13:42:45.657 23407 23407 I MedTimerIndependentTest: BEFORE_EXPLICIT_BROADCAST
+10-12 13:42:45.673   578  1012 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-12 13:42:45.679   578  1012 I AppWidgetServiceImpl: updateAppWidgetIds() 0
+10-12 13:42:45.680   578   911 D AppWidgetServiceImpl: Trying to notify widget update for package com.futsch1.medtimer with widget id: 6
+10-12 13:42:45.680   578  1012 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-12 13:42:45.682   578  1012 I AppWidgetServiceImpl: updateAppWidgetIds() 0
+10-12 13:42:45.682   578   911 D AppWidgetServiceImpl: Trying to notify widget update for package com.futsch1.medtimer with widget id: 7
+
+FATAL EXCEPTION count (full test window):
+0
+
+Recording:
+[FORMAT]
+duration=36.829900
+size=4353103
+[/FORMAT]
+
+Automatic refresh details (save at 13:42:21.664):
+10-12 13:42:21.664 22846 22846 I MedTimerIndependentTest: BEFORE_SAVE_21_00
+10-12 13:42:21.786 20922 20938 D WM-SystemJobScheduler: Scheduling work ID 692eb1b6-b2af-4c52-8695-b6d0ea2c9616 (com.futsch1.medtimer.reminders.RescheduleWork), Job ID 9
+10-12 13:42:21.841 20922 20922 D WM-WorkerWrapper: Starting work for com.futsch1.medtimer.reminders.RescheduleWork
+10-12 13:42:21.895 20922 20938 I Scheduler: Scheduled reminder for Ibuprofen/1 to 2026-10-12T21:00:00Z
+10-12 13:42:21.902 20922 20938 I WM-WorkerWrapper: Worker result SUCCESS for Work [ id=692eb1b6-b2af-4c52-8695-b6d0ea2c9616, class=com.futsch1.medtimer.reminders.RescheduleWork, tags={ com.futsch1.medtimer.reminders.RescheduleWork } ]
+10-12 13:42:21.915   578   911 D AppWidgetServiceImpl: Trying to notify widget update for package com.futsch1.medtimer with widget id: 6
+10-12 13:42:21.928   578   911 D AppWidgetServiceImpl: Trying to notify widget update for package com.futsch1.medtimer with widget id: 7
