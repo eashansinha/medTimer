@@ -82,7 +82,7 @@ kotlin {
 
 dependencies {
     val appcompatVersion = "1.8.0"
-    val materialVersion = "1.12.0"
+    val materialVersion = "1.14.0"
     val constraintLayoutVersion = "2.2.2"
     val androidXNavigationVersion = "2.10.2"
     val preferenceKtxVersion = "1.2.1"
