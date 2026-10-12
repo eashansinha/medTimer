@@ -102,12 +102,17 @@ and `AutostartUnitTest` assertions are on mock interactions / WorkManager state 
 `.github/workflows/test.yml` (`Test` workflow) runs `JacocoDebugCodeCoverage` (unit + instrumented) on `system-images;android-37.0;google_apis;x86_64`
 and would record the app launch (`adb shell screenrecord`, 30 s) as artifact `LaunchRecording-api37.0`; test reports are the `TestReports` artifact.
 
-**Observed result on the PR (job `test`, id 114792819524, run of commit `0993cb6c`, https://github.com/eashansinha/medTimer/pull/2/checks):** FAILED before any test ran.
-The API 37.0 emulator booted (`Boot completed in 28366 ms`), `./gradlew packageDebug` succeeded (`BUILD SUCCESSFUL in 3m 28s`), then
-`adb shell input keyevent 3` failed with `cmd: Can't find service: input` (exit code 20) and the emulator log shows repeated
-`ERROR | Failed to find ColorBuffer … Failed to bind to texture: invalid color buffer`, i.e. the guest system services died under the
-headless swiftshader emulator - the same gfxstream class of failure as on the development VM. Both artifacts were empty
-("No files were found"). **Android 17 UI/instrumented evidence is therefore still outstanding** (open item: run on a physical
-Android 17 device or a hardware-accelerated emulator). The `compatibilityTest.yml` matrix (API 28 and 34, phone and tablet) passed on the same PR;
+**Observed results on the PR (https://github.com/eashansinha/medTimer/pull/2/checks), API 37.0 emulator - both runs FAILED, no test executed on Android 17:**
+
+* Run 1 (commit `0993cb6c`, job id 114792819524): emulator booted (`Boot completed in 28366 ms`), `./gradlew packageDebug` succeeded, then
+  `adb shell input keyevent 3` failed with `cmd: Can't find service: input` (exit code 20); emulator log full of
+  `ERROR | Failed to find ColorBuffer … invalid color buffer` - guest system services died under the headless swiftshader emulator. Both artifacts empty.
+* Run 2 (commit `993c3141`, run 38247054930, job id 114803459322): emulator stayed up and `JacocoDebugCodeCoverage` ran, but every APK install failed with
+  `java.io.IOException: Requested internal only, but not enough space` (the default AVD data partition is too small for the API 37 image), so
+  `connectedDebugAndroidTest` executed 0 tests and the launch recording step aborted at `adb install`. `TestReports` artifact uploaded (unit tests + lint only).
+  Follow-up: `disk-size: 6144M` added to both emulator-runner steps (the same partition size that works locally); result of that run to be read from the checks tab.
+
+**Android 17 UI/instrumented evidence is therefore still outstanding** (open item: physical Android 17 device or a hardware-accelerated emulator).
+The `compatibilityTest.yml` matrix (API 28 and 34, phone and tablet) passed on the same PR;
 `Analyze (java-kotlin)` (`./gradlew build`) fails on the 5 remaining lint errors (it also fails on `main`, which has 19), and
 `dependency-review` fails with "Dependency review is not supported on this repository" (repository setting, not code).
