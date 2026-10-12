@@ -77,6 +77,20 @@ Privacy & Offline Accessibility:
 
 MedTimer is a free app without adds.
 
+## Building
+
+Requirements (as of EE-30 / Android 17 support):
+
+- JDK 17
+- Android SDK with platform `android-37` and build-tools 37.0.0 (`compileSdk = 37`, `targetSdk = 37`, `minSdk = 28`)
+- Gradle wrapper 9.8.1 and Android Gradle Plugin 9.4.1 (built-in Kotlin; no separate Kotlin Android plugin)
+
+```bash
+./gradlew assembleDebug testDebugUnitTest lintDebug          # build, JVM tests (JUnit 5 + Robolectric), lint
+./gradlew JacocoDebugCodeCoverage -x connectedDebugAndroidTest  # unit-test coverage report
+./gradlew connectedDebugAndroidTest                           # instrumented tests on a connected device/emulator
+```
+
 ## Documentation
 
 See the [use cases documentation](doc/UseCases.md) for more details on how to use the app and
