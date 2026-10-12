@@ -31,7 +31,7 @@ Verification that MedTimer built with `compileSdk`/`targetSdk` 37 (branch `devin
 | JVM unit tests (`./gradlew testDebugUnitTest`) | 56 / 56 passed | **65 / 65 passed** | +9 tests (IMP-52/53/26) |
 | Unit coverage (`./gradlew jacocoUnitTestReport`) | 10.96 % lines, 12.72 % branches | **12.33 % lines, 13.94 % branches** | details in `docs/upgrade/test-evidence.md` |
 | Instrumented, API 35 (`./gradlew connectedDebugAndroidTest`) | 21 run, 20 passed, 1 failed (`TagTest.tagHandling`, pre-existing) | 23 run, 21 passed, 2 failed (`TagTest.tagHandling` pre-existing; `Android17BehaviorTest.edgeToEdgeInsets…` test-assertion bug, fixed and re-run alone: 2/2 passed) | +2 tests (`Android17BehaviorTest`) |
-| Instrumented, API 37 | not run (no device at baseline) | CI run — see §6 | |
+| Instrumented, API 37 | not run (no device at baseline) | **not executed** — 3 CI runs, device runner could not install the APK / system services unavailable (see §6) | |
 
 ## 5. Device verification on API 35 (manual, recorded)
 
@@ -55,11 +55,11 @@ Grants used before the flow (equivalent to what a user grants in Settings): `pm 
 |---|---|
 | Local API 37 AVD install | `adb install -r -g MedTimer-debug.apk` → `Success` on the API 37 AVD (Android 17, `ro.build.version.sdk=37`); `dumpsys package`: `targetSdk=37 versionName=1.16.5`. The first install attempt right after boot failed with `Can't find service: package` while SurfaceFlinger was crash-looping (41 crash lines in logcat, screencap empty) — log: `docs/upgrade/evidence/api37-install.txt`. No UI evidence from this device. |
 | Local API 37 UI | **not possible** on this VM (known SurfaceFlinger crash loop) — not faked |
-| GitHub Actions run (API 37 emulator: connected tests + unit tests + lint + app-launch recording) | CI_PLACEHOLDER |
+| GitHub Actions `Test` workflow, API 37.0 `google_apis` x86_64 | Run 1 https://github.com/eashansinha/medTimer/actions/runs/38295620801 and run 2 https://github.com/eashansinha/medTimer/actions/runs/38299027059: emulator booted, but the AGP device runner failed to install the APK (`Requested internal only, but not enough space`; later `cmd: Can't find service: package`) while `connectedDebugAndroidTest` still reported `BUILD SUCCESSFUL` → **0 instrumented tests ran**; `AppLaunchRecording-api37` artifact empty, `TestReports` artifact contains unit-test + lint output only. Run 3 (job id 114987830155 (run URL not resolvable from the build VM; see the PR checks tab)): runner's post-boot `input keyevent 82` → `Can't find service: input`, job stopped. Workflow hardened in `3df9b871` (8 GB data partition, single post-boot script, report check that fails on 0 tests). Result of the run triggered by the final commits: see PR #8 checks — not claimed here. |
 
 ## 7. Not verified / limitations
 
-- Real Android 17 hardware behavior (exact alarm delivery under Doze, widget rendering, notification tap) — only CI emulator evidence.
+- Real Android 17 behavior (exact alarm delivery under Doze, widget rendering, notification tap, edge-to-edge, predictive back) — **no Android 17 runtime evidence at all**: local API 37 AVD is install-only and the CI API 37.0 emulator did not execute any test (see §6). All runtime evidence in this report is API 35.
 - Tablet / large-screen layouts (IMP-05/41) — no tablet AVD.
 - Material time picker interaction via `adb input` was unreliable, so the recorded flow uses an interval reminder instead of a fixed-time reminder; the fixed-time path is covered by the JVM scheduling tests and the instrumented `ReminderTest`.
 - `TagTest.tagHandling` fails on the headless API 35 emulator before and after the change (pre-existing).

@@ -33,7 +33,7 @@ See [`verification-report.md`](verification-report.md) and [`../upgrade/test-evi
 
 ## Known limitations
 
-- **Android 17 UI could not be run on the build VM**: the API 37 system image crash-loops SurfaceFlinger under the headless emulator (gfxstream `hasReadColorBufferDma` assertion); the local API 37 AVD was used for `adb install` evidence only. Android 17 UI/instrumented evidence comes from the CI workflow.
+- **Android 17 UI could not be run on the build VM**: the API 37 system image crash-loops SurfaceFlinger under the headless emulator (gfxstream `hasReadColorBufferDma` assertion); the local API 37 AVD was used for `adb install` evidence only. The GitHub Actions API 37.0 emulator job on PR #8 booted but did not execute the instrumented suite in any observed run (APK install failed inside the device runner, system services unavailable) — details in `docs/upgrade/test-evidence.md` “CI status”. **There is no Android 17 runtime evidence; all device evidence is API 35.**
 - `TagTest.tagHandling` (instrumented) fails on the headless API 35 emulator before and after the upgrade (dialog button click times out) — pre-existing, unrelated to the upgrade.
 - `androidx.lifecycle:lifecycle-extensions:2.2.0` is a deprecated artifact still referenced by the build.
 - SonarQube analysis is no longer available from this branch's build.

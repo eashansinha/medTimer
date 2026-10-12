@@ -23,6 +23,6 @@ All notable changes to this fork of MedTimer are documented here. Upstream relea
 - `docs/upgrade-impact-android-17.md` (Android 16/17 behavior-change impact assessment, IMP-01…IMP-55), `docs/upgrade/baseline.md`, `docs/upgrade/test-evidence.md`, `docs/architecture.md`, `docs/compliance-drafts/*` (all DRAFT for human review).
 
 ### Known limitations / open items
-- Android 17 UI behavior could only be exercised on the GitHub Actions API 37 emulator; the local API 37 AVD on the build VM is install-only (SurfaceFlinger crash loop under headless emulator).
+- No Android 17 (API 37) runtime evidence yet: the local API 37 AVD is install-only (SurfaceFlinger crash loop under the headless emulator) and the GitHub Actions API 37.0 emulator runs on the PR did not execute the instrumented suite (device runner could not install the APK / system services unavailable). All device evidence is from API 35.
 - `TagTest.tagHandling` (instrumented) fails on the headless API 35 emulator before and after the upgrade (pre-existing).
 - `androidx.lifecycle:lifecycle-extensions:2.2.0` is deprecated and still referenced.

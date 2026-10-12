@@ -100,7 +100,7 @@ Each new test was observed failing at least once while being written (e.g. the f
 
 Espresso note: with Espresso 3.7.0 (first attempt) every instrumented test waited on `IdlingPolicy: These resources are not idle: [LooperIdlingResource-NN-Export]` (the debug-only `Export` HandlerThread registered by `OptionsMenu.setupGenerateTestData()`), `BasicUITest` alone ran > 15 min; with Espresso 3.6.1 and nothing else changed `BasicUITest` = 2 tests, 0 failures, `BUILD SUCCESSFUL in 54s` (`./gradlew connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.futsch1.medtimer.BasicUITest`). Espresso is therefore pinned at 3.6.1 (commit `8b3393b3`).
 
-**API 37**: not run locally (headless SurfaceFlinger crash loop on this VM; install-only evidence in the verification report). The GitHub Actions workflow on the PR runs the same suite on an API 37 emulator — see the PR for the run URL and result.
+**API 37**: not run locally (headless SurfaceFlinger crash loop on this VM; install-only evidence in the verification report). The GitHub Actions workflow on the PR targets an API 37.0 emulator; as of hand-back none of its runs executed the suite — see “CI status” below.
 
 ## 5. APK facts
 
@@ -123,5 +123,21 @@ is not covered by this run.
 - `dependency-review` fails on every run with `Dependency review is not supported on this repository. Please ensure that Dependency
   graph is enabled ...`. `.github/workflows/dependency-review.yml` is unchanged on this branch (`git diff main...HEAD -- .github/workflows/`
   touches only `test.yml`), so this is a repository-settings issue, not caused by the upgrade. Open item for the repo owner.
-- The API 37 emulator run (`test` job: connected tests, unit tests, lint, `AppLaunchRecording-api37` artifact) result is recorded in
-  `docs/compliance-drafts/verification-report.md` §6 and in the PR; if it had not finished at hand-back, that is stated there.
+- **API 37 emulator runs so far (all red, no instrumented test executed on API 37):**
+  - Run 1 `https://github.com/eashansinha/medTimer/actions/runs/38295620801` (commit `2f1365ba`): emulator booted; `JacocoDebugCodeCoverage`
+    printed `BUILD SUCCESSFUL in 6m 32s`, but the log shows `AndroidTestRunner failed on emulator-5554 … Failed to install APK …
+    Requested internal only, but not enough space` — AGP 9.4.1's connected test task did **not** fail the build when the device runner
+    could not install the APK. The follow-up `adb install -g` failed with `cmd: Can't find service: package`. Artifacts: `TestReports`
+    (id 11770090027, 469 files, unit-test + lint reports only), `AppLaunchRecording-api37` empty.
+  - Run 2 `https://github.com/eashansinha/medTimer/actions/runs/38299027059` (commit `32761cf2`): same install failure inside the test
+    runner (`not enough space`), then the multi-line install-retry loop was a shell syntax error — `android-emulator-runner` executes every
+    `script:` line in its own `sh -c`, so loops and `EXIT_CODE` do not survive across lines. Artifacts: `TestReports` (id 11769403425),
+    `AppLaunchRecording-api37` empty.
+  - Run 3 (job id 114987830155 (run URL not resolvable from the build VM; see the PR checks tab), commit `3df9b871`): the runner's own post-boot `adb shell input keyevent 82` failed with
+    `cmd: Can't find service: input` right after `sys.boot_completed=1` (fresh AVD with 8 GB data partition); nothing after that ran.
+  - Fixes in `3df9b871`: `disk-size: 8192M` + new AVD cache key, post-boot commands moved into `.github/scripts/ci-emulator-run.sh`
+    (single shell), and the script now fails unless `app/build/outputs/androidTest-results/connected/debug/TEST-*.xml` exists with
+    `tests>0` and `failures=errors=0` — so the AGP silent pass above can no longer turn the job green.
+  - Conclusion at hand-back: **no Android 17 (API 37) instrumented or UI evidence exists** — neither locally (SurfaceFlinger crash loop) nor
+    in CI (API 37.0 `google_apis` image: package/input system services unavailable or storage exhausted). The latest run's result is in
+    the PR checks tab; `docs/compliance-drafts/verification-report.md` §6 is updated with each observed run.
