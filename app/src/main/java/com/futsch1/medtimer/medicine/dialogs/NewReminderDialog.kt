@@ -54,7 +54,7 @@ class NewReminderDialog(
         textInputEditText.postDelayed({
             val imm: InputMethodManager? =
                 getSystemService(context, InputMethodManager::class.java)
-            imm?.showSoftInput(textInputEditText, InputMethodManager.SHOW_IMPLICIT)
+            imm?.showSoftInput(textInputEditText, 0)
         }, 100)
     }
 

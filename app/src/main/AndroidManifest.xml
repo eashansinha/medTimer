@@ -30,7 +30,7 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MedTimer"
-        android:usesCleartextTraffic="false"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="tiramisu">
 
         <service
@@ -74,6 +74,7 @@
                 <action android:name="com.futsch1.medTimer.RESCHEDULE_ACTION" />
                 <action android:name="com.futsch1.medTimer.DISMISSED_ACTION" />
                 <action android:name="com.futsch1.medTimer.TAKEN_ACTION" />
+                <action android:name="com.futsch1.medTimer.SNOOZE_ACTION" />
             </intent-filter>
         </receiver>
 
