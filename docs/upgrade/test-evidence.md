@@ -110,7 +110,16 @@ and would record the app launch (`adb shell screenrecord`, 30 s) as artifact `La
 * Run 2 (commit `993c3141`, run 38247054930, job id 114803459322): emulator stayed up and `JacocoDebugCodeCoverage` ran, but every APK install failed with
   `java.io.IOException: Requested internal only, but not enough space` (the default AVD data partition is too small for the API 37 image), so
   `connectedDebugAndroidTest` executed 0 tests and the launch recording step aborted at `adb install`. `TestReports` artifact uploaded (unit tests + lint only).
-  Follow-up: `disk-size: 6144M` added to both emulator-runner steps (the same partition size that works locally); result of that run to be read from the checks tab.
+  Follow-up: `disk-size: 6144M` added to both emulator-runner steps (the same partition size that works locally).
+* Run 3 (commit `765b264a`, run 38250098534, job id 114813856652, with `disk-size: 6144M`): emulator booted and `packageDebug` succeeded, but during
+  `connectedDebugAndroidTest` the guest system services died again (`Failed to set setting window_animation_scale … cmd: Can't find service: settings`,
+  then `Can't find service: package` for every install/uninstall) - 0 instrumented tests ran; the launch-recording `adb install` failed the same way.
+  `TestReports` (unit + lint only) uploaded, `LaunchRecording-api37.0` empty.
+
+Conclusion: the `android-37.0;google_apis;x86_64` image loses its system services under the headless swiftshader emulator on GitHub-hosted runners
+(2 of 3 runs; the third failed on disk space, now fixed) - the same failure class as the local VM. No further CI tuning was attempted in this ticket.
+The `compatibilityTest.yml` matrix on the same commits: run 2 all four jobs (API 28/34 × phone/tablet) passed; run 3 `androidTest (34, medium_phone)` failed
+before any test on a Maven Central download error (`Could not download kotlin-compiler-embeddable-2.2.10.jar`), the other three passed.
 
 **Android 17 UI/instrumented evidence is therefore still outstanding** (open item: physical Android 17 device or a hardware-accelerated emulator).
 The `compatibilityTest.yml` matrix (API 28 and 34, phone and tablet) passed on the same PR;
