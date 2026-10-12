@@ -108,3 +108,17 @@ is used for `adb install` evidence only; UI/instrumented coverage on API 37 come
 
 - Run 1 (commit `a2d19a40`, runner v2.33.0, `target_api_level: 37`): https://github.com/eashansinha/medTimer/actions/runs/38256240864 — `test` job failed at "Install Android SDK": `Warning: Failed to find package 'platforms;android-37'` (no test executed). `dependency-review` job: "Dependency review is not supported on this repository" (GitHub setting, unrelated to this change).
 - Run 2 (after the workflow fix): see the checks on https://github.com/eashansinha/medTimer/pull/4 — outcome reported from the real run only.
+
+## Independent API 35 re-run (testing agent, 2026-10-12, API 35 / `api35` AVD, targetSdk-37 APK)
+
+Independent second pass through the real UI (no reuse of the data above). Commands/output: `independent-api35-runtime-evidence.txt`, full logcat `independent-api35-logcat-final.txt` (0 `FATAL EXCEPTION`).
+
+| File | Shows |
+|---|---|
+| `independent-api35-01-start.png` … `-03-dose.png` | fresh install + start, Ibuprofen 1 @ 8:00 PM created in the UI, dose logged |
+| `independent-api35-04-before.png` / `-06-after.png` | Next reminders widget before/after editing the reminder 8:00 PM → 9:00 PM — the placed widget refreshed automatically (RescheduleWork + `updateAppWidgetIds` for ids 6 and 7 ~0.3 s after the save, before any manual broadcast) |
+| `independent-api35-05-next-tap.png`, `-07-recent-tap.png` | tapping either widget opens `MainActivity` |
+| `independent-api35-08-resize-drag.png`, `-09-large.png`, `-10-small.png` | Next reminders widget resized: 4 populated lines (large layout) / 1 line (small layout) |
+| `independent-api35-widget-flow.mp4` | 37 s screen recording of the flow |
+
+Not exercised in this pass: 4 populated lines in the large *Recent events* widget; anything on API 37 (see above).
