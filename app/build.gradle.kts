@@ -1,13 +1,15 @@
 plugins {
     id("com.android.application")
     id("androidx.room")
-    id("com.github.triplet.play") version "3.12.1"
+    id("com.github.triplet.play") version "4.1.1"
     id("androidx.navigation.safeargs")
-    id("org.jetbrains.kotlin.android")
     id("jacoco")
-    //noinspection GradleDependency: Version 6 crashes with an error in apache.commons.compress
-    id("org.sonarqube") version "5.1.0.4882"
     id("tech.apter.junit5.jupiter.robolectric-extension-gradle-plugin") version "0.9.0"
+    // EE-30: org.sonarqube (5.1.0.4882 and 7.5.0.8588) still uses the legacy AGP variant API
+    // (android.applicationVariants) and fails to apply under AGP 9 ("No Android variant found").
+    // Disabled on this branch; CI only runs `gradle sonar` when SONAR_TOKEN is set. Re-enable once the
+    // plugin supports the AGP 9 Variant API.
+    // id("org.sonarqube") version "7.5.0.8588"
 }
 
 room {
@@ -66,9 +68,6 @@ android {
         }
         animationsDisabled = true
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
-    }
-    kotlinOptions {
-        jvmTarget = "17"
     }
     lint {
         abortOnError = true
@@ -176,19 +175,19 @@ java {
 tasks.withType<JavaCompile> {
     options.compilerArgs.addAll(listOf("-Xlint:unchecked", "-Xlint:deprecation"))
 }
-sonar {
-    properties {
-        property("sonar.projectKey", "Futsch1_medTimer")
-        property("sonar.organization", "futsch1")
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.gradle.skipCompile", "true")
-        property("sonar.android.lint.report", "build/reports/lint-results-debug.xml")
-        property(
-            "sonar.coverage.jacoco.xmlReportPaths",
-            "build/reports/jacoco/JacocoDebugCodeCoverage/JacocoDebugCodeCoverage.xml"
-        )
-    }
-}
+// sonar {
+//     properties {
+//         property("sonar.projectKey", "Futsch1_medTimer")
+//         property("sonar.organization", "futsch1")
+//         property("sonar.host.url", "https://sonarcloud.io")
+//         property("sonar.gradle.skipCompile", "true")
+//         property("sonar.android.lint.report", "build/reports/lint-results-debug.xml")
+//         property(
+//             "sonar.coverage.jacoco.xmlReportPaths",
+//             "build/reports/jacoco/JacocoDebugCodeCoverage/JacocoDebugCodeCoverage.xml"
+//         )
+//     }
+// }
 
 tasks.withType(Test::class) {
     configure<JacocoTaskExtension> {
