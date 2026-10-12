@@ -127,6 +127,7 @@ dependencies {
     implementation("androidx.preference:preference-ktx:$preferenceKtxVersion")
     implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleExtensionsVersion")
     implementation("androidx.work:work-runtime:$workRuntimeVersion")
+    testImplementation("androidx.work:work-testing:$workRuntimeVersion")
     implementation("androidx.core:core-ktx:$coreKtxVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleViewmodelKtxVersion")
     implementation("androidx.room:room-runtime:$roomVersion")
