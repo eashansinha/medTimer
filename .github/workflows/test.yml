@@ -39,7 +39,9 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ env.target_api_level }}-${{ env.profile }}
+          # disk size is part of the key: a cached AVD keeps its userdata image, so changing disk-size must
+          # create a fresh AVD
+          key: avd-${{ env.target_api_level }}-${{ env.profile }}-6144M
 
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
