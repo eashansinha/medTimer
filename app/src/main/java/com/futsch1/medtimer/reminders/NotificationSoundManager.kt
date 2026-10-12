@@ -22,9 +22,10 @@ import com.futsch1.medtimer.preferences.PreferencesNames
  *   notification policy access is not granted (Android 7+). Access is checked up front, but it can
  *   be revoked between the check and the delayed restore, so every call is also guarded.
  * - Android 17 background audio hardening silently ignores volume and ringer mode calls made
- *   from the background without a while-in-use foreground service. The outcome of each call is
- *   therefore verified via isStreamMute() and a restore that did not take effect is retried the
- *   next time restore() is called instead of being forgotten.
+ *   from the background without a while-in-use foreground service. The outcome of the unmute is
+ *   therefore verified via isStreamMute(): if it had no effect nothing is restored later, so the
+ *   device is never muted by this class. A restore that is ignored is logged and not retried; a
+ *   retry would run from the background as well and could mute a ringer mode the user chose later.
  * - The pending state lives in memory only. If the process is killed between the unmute and the
  *   delayed restore (~5 s), the ring stream stays unmuted until the next reminder cycle runs; the
  *   device is never left muted or in a ringer mode it was not in before, because muting only
@@ -131,8 +132,7 @@ class NotificationSoundManager(val context: Context) {
                     Log.w(LogTags.REMINDER, "Notification policy access denied while restoring ringer mode", e)
                 }
                 if (!audioManager.isStreamMute(AudioManager.STREAM_RING)) {
-                    Log.w(LogTags.REMINDER, "Ring stream is still unmuted after restore, retrying on next reminder")
-                    return
+                    Log.w(LogTags.REMINDER, "Ring stream is still unmuted after restore, leaving it as is")
                 }
             }
             pending = false

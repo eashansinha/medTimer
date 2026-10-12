@@ -218,9 +218,9 @@ class NotificationSoundManagerUnitTest {
     }
 
     @Test
-    fun test_securityExceptionWhileRestoring_isSwallowedAndRetriedOnNextReminder() {
-        // muted, unmuted by us, still unmuted after failed restore, muted after successful retry
-        `when`(mockAudioManager.isStreamMute(AudioManager.STREAM_RING)).thenReturn(true, false, false, true)
+    fun test_securityExceptionWhileRestoring_isSwallowedAndCycleCompletes() {
+        // muted, unmuted by us, still unmuted after the failed restore, muted again on the next reminder
+        `when`(mockAudioManager.isStreamMute(AudioManager.STREAM_RING)).thenReturn(true, false, false, true, false, true)
         doThrow(SecurityException("Not allowed to change Do Not Disturb state")).doNothing()
             .`when`(mockAudioManager).adjustStreamVolume(AudioManager.STREAM_RING, AudioManager.ADJUST_MUTE, 0)
 
@@ -228,28 +228,32 @@ class NotificationSoundManagerUnitTest {
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
         verifyUnmuted(1)
         verify(mockAudioManager, times(1)).adjustStreamVolume(AudioManager.STREAM_RING, AudioManager.ADJUST_MUTE, 0)
+        verify(mockAudioManager, times(0)).ringerMode = AudioManager.RINGER_MODE_VIBRATE
 
-        // Next reminder: the ring stream is still unmuted from the first reminder, so it is not unmuted again
+        // Next reminder starts a fresh cycle: the stream is unmuted again and the restore succeeds
         runReminderCycle()
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
-        verifyUnmuted(1)
+        verifyUnmuted(2)
         verify(mockAudioManager, times(2)).adjustStreamVolume(AudioManager.STREAM_RING, AudioManager.ADJUST_MUTE, 0)
         verify(mockAudioManager, times(1)).ringerMode = AudioManager.RINGER_MODE_VIBRATE
     }
 
     @Test
-    fun test_restoreIgnoredByPlatform_isRetriedOnNextReminder() {
-        // Android 17 background audio hardening: adjustStreamVolume() is silently ignored
-        `when`(mockAudioManager.isStreamMute(AudioManager.STREAM_RING)).thenReturn(true, false, false, true)
-
-        runReminderCycle()
-        ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
-        verifyMuted(1)
+    fun test_restoreIgnoredByPlatform_isNotRetried() {
+        // Android 17 background audio hardening: adjustStreamVolume(ADJUST_MUTE) is silently ignored
+        `when`(mockAudioManager.isStreamMute(AudioManager.STREAM_RING)).thenReturn(true, false, false)
 
         runReminderCycle()
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
         verifyUnmuted(1)
-        verifyMuted(2)
+        verifyMuted(1)
+
+        // Next reminder: the stream is not muted, so there is nothing to unmute and nothing to restore
+        `when`(mockAudioManager.isStreamMute(AudioManager.STREAM_RING)).thenReturn(false)
+        runReminderCycle()
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
+        verifyUnmuted(1)
+        verifyMuted(1)
     }
 
     @Test
