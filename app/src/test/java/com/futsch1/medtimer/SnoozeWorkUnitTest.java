@@ -116,7 +116,8 @@ public class SnoozeWorkUnitTest {
         assertEquals(15, SnoozeWork.sanitizeSnoozeMinutes(-5));
         assertEquals(1, SnoozeWork.sanitizeSnoozeMinutes(1));
         assertEquals(90, SnoozeWork.sanitizeSnoozeMinutes(90));
-        assertEquals(24 * 60, SnoozeWork.sanitizeSnoozeMinutes(24 * 60));
-        assertEquals(24 * 60, SnoozeWork.sanitizeSnoozeMinutes(24 * 60 + 1));
+        assertEquals(2 * 24 * 60, SnoozeWork.sanitizeSnoozeMinutes(2 * 24 * 60));
+        assertEquals(7 * 24 * 60, SnoozeWork.sanitizeSnoozeMinutes(7 * 24 * 60));
+        assertEquals(7 * 24 * 60, SnoozeWork.sanitizeSnoozeMinutes(7 * 24 * 60 + 1));
     }
 }

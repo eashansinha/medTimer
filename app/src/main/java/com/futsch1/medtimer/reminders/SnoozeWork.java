@@ -19,7 +19,7 @@ import java.time.Instant;
 public class SnoozeWork extends RescheduleWork {
 
     public static final int DEFAULT_SNOOZE_MINUTES = 15;
-    public static final int MAX_SNOOZE_MINUTES = 24 * 60;
+    public static final int MAX_SNOOZE_MINUTES = 7 * 24 * 60;
 
     public SnoozeWork(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -52,8 +52,9 @@ public class SnoozeWork extends RescheduleWork {
     }
 
     /**
-     * A zero or negative snooze would re-raise the reminder immediately and loop; an absurdly
-     * large one would silently hide it for days. Fall back to the default or clamp to one day.
+     * The custom snooze dialog accepts any signed integer. Zero or negative would re-raise the
+     * reminder immediately and loop; fall back to the default. Clamp absurd values to one week so a
+     * typo cannot hide a reminder indefinitely while multi-day custom snoozes keep working.
      */
     public static int sanitizeSnoozeMinutes(int minutes) {
         if (minutes <= 0) {
