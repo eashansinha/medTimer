@@ -102,12 +102,7 @@ public class RescheduleWork extends Worker {
 
             // Cancel potentially already running alarm and set new
             alarmManager.cancel(pendingIntent);
-
-            if (canScheduleExactAlarms(alarmManager)) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timestamp.toEpochMilli(), pendingIntent);
-            } else {
-                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timestamp.toEpochMilli(), pendingIntent);
-            }
+            scheduleAlarm(timestamp.toEpochMilli(), pendingIntent);
 
             Log.i(LogTags.SCHEDULER,
                     String.format("Scheduled reminder for %s/%d to %s",
@@ -138,6 +133,20 @@ public class RescheduleWork extends Worker {
         Intent intent = ReminderProcessor.getReminderAction(context, 0, 0, null);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.cancel(pendingIntent);
+    }
+
+    private void scheduleAlarm(long triggerAtMillis, PendingIntent pendingIntent) {
+        if (canScheduleExactAlarms(alarmManager)) {
+            try {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
+                return;
+            } catch (SecurityException e) {
+                // SCHEDULE_EXACT_ALARM can be revoked by the user or the system between the
+                // canScheduleExactAlarms() check and the call; degrade to an inexact alarm instead of failing the worker.
+                Log.w(LogTags.SCHEDULER, "Exact alarm permission not granted anymore, falling back to inexact alarm", e);
+            }
+        }
+        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
     }
 
     private boolean canScheduleExactAlarms(AlarmManager alarmManager) {
