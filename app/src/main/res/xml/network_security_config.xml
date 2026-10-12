@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Replaces android:usesCleartextTraffic="false", which is deprecated on the API 37 platform.
+     The app declares no INTERNET permission; this keeps cleartext disabled for any library traffic. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+</network-security-config>

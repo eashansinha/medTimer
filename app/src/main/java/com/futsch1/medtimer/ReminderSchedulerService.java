@@ -14,6 +14,15 @@ import com.futsch1.medtimer.reminders.ReminderProcessor;
 
 import java.util.List;
 
+/**
+ * Started service that re-runs the reminder scheduling whenever the medicine list changes.
+ * <p>
+ * It is intentionally <b>not</b> a foreground service: it is only started by {@code MainActivity.onResume()}
+ * while the app process is in the foreground (see the importance check there), it never calls
+ * {@code startForeground()} and all actual work is handed to WorkManager. Therefore the Android 14
+ * foreground service type requirement and the Android 12+/14/15 restrictions on starting foreground
+ * services from the background or from BOOT_COMPLETED do not apply to it.
+ */
 public class ReminderSchedulerService extends LifecycleService {
 
     @Nullable

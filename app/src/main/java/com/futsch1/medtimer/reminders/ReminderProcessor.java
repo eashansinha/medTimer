@@ -19,12 +19,14 @@ import static com.futsch1.medtimer.ActivityCodes.TAKEN_ACTION;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.ListenableWorker;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.OutOfQuotaPolicy;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
@@ -159,17 +161,34 @@ public class ReminderProcessor extends BroadcastReceiver {
                             .build();
             workManager.enqueue(snoozeWork);
         } else {
-            WorkRequest reminderWork =
-                    new OneTimeWorkRequest.Builder(ReminderWork.class)
-                            .setInputData(new Data.Builder()
-                                    .putInt(EXTRA_REMINDER_ID, intent.getIntExtra(EXTRA_REMINDER_ID, 0))
-                                    .putInt(EXTRA_REMINDER_EVENT_ID, intent.getIntExtra(EXTRA_REMINDER_EVENT_ID, 0))
-                                    .putLong(EXTRA_REMINDER_DATE, intent.getLongExtra(EXTRA_REMINDER_DATE, 0))
-                                    .putInt(EXTRA_REMINDER_TIME, intent.getIntExtra(EXTRA_REMINDER_TIME, 0))
-                                    .build())
-                            .build();
-            workManager.enqueue(reminderWork);
+            workManager.enqueue(buildReminderWorkRequest(intent));
         }
+    }
+
+    /**
+     * Builds the work request for an alarm-triggered reminder.
+     * <p>
+     * The alarm broadcast only grants the app a short temporary allowlist window. A regular WorkManager
+     * job enqueued from it can be deferred by Doze / app standby until the next maintenance window, which
+     * delays the notification (upstream issue #1010). From API 31 on the request is therefore expedited:
+     * expedited jobs are "less restricted during Doze and battery saver" and run as soon as possible, and
+     * fall back to a regular request when the expedited quota is exhausted. Below API 31 WorkManager would
+     * run expedited work as a foreground service, which would need a getForegroundInfo() implementation and
+     * a visible notification, so there the request stays regular (the behaviour before this change).
+     */
+    static OneTimeWorkRequest buildReminderWorkRequest(Intent intent) {
+        OneTimeWorkRequest.Builder builder =
+                new OneTimeWorkRequest.Builder(ReminderWork.class)
+                        .setInputData(new Data.Builder()
+                                .putInt(EXTRA_REMINDER_ID, intent.getIntExtra(EXTRA_REMINDER_ID, 0))
+                                .putInt(EXTRA_REMINDER_EVENT_ID, intent.getIntExtra(EXTRA_REMINDER_EVENT_ID, 0))
+                                .putLong(EXTRA_REMINDER_DATE, intent.getLongExtra(EXTRA_REMINDER_DATE, 0))
+                                .putInt(EXTRA_REMINDER_TIME, intent.getIntExtra(EXTRA_REMINDER_TIME, 0))
+                                .build());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            builder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST);
+        }
+        return builder.build();
     }
 
 }
