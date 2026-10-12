@@ -4,6 +4,7 @@ import static com.futsch1.medtimer.ActivityCodes.EXTRA_REMINDER_DATE;
 import static com.futsch1.medtimer.ActivityCodes.EXTRA_REMINDER_EVENT_ID;
 import static com.futsch1.medtimer.ActivityCodes.EXTRA_REMINDER_ID;
 import static com.futsch1.medtimer.ActivityCodes.EXTRA_REMINDER_TIME;
+import static android.Manifest.permission.POST_NOTIFICATIONS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
@@ -14,6 +15,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,6 +24,7 @@ import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.text.format.DateFormat;
 
@@ -39,6 +42,7 @@ import com.futsch1.medtimer.database.Reminder;
 import com.futsch1.medtimer.database.ReminderEvent;
 import com.futsch1.medtimer.helpers.MedicineIcons;
 import com.futsch1.medtimer.reminders.NotificationSoundManager;
+import com.futsch1.medtimer.reminders.Notifications;
 import com.futsch1.medtimer.reminders.ReminderWork;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -187,6 +191,42 @@ public class ReminderWorkUnitTest {
             assertEquals(reminderId, captor.getValue().reminderId);
             assertEquals(reminderEventId, captor.getValue().reminderEventId);
             verify(mockNotificationManager, times(1)).notify(eq(notificationId), any());
+        }
+    }
+
+    @Test
+    public void testDoWorkPostNotificationsDenied() {
+        // Android 13+ (API 33) POST_NOTIFICATIONS is a runtime permission: when the user denied it the reminder
+        // work must still succeed (event recorded, repeat/reschedule requested) without posting a notification.
+        when(mockApplication.checkSelfPermission(POST_NOTIFICATIONS)).thenReturn(PackageManager.PERMISSION_DENIED);
+
+        try (MockedConstruction<MedicineRepository> mockedMedicineRepositories = mockConstruction(MedicineRepository.class, (mock, context) -> {
+            when(mock.getReminder(reminderId)).thenReturn(new Reminder(medicineId));
+            FullMedicine medicine = new FullMedicine();
+            medicine.medicine = new Medicine("TestMedicine");
+            medicine.tags = new ArrayList<>();
+            when(mock.getMedicine(medicineId)).thenReturn(medicine);
+            ReminderEvent reminderEvent = new ReminderEvent();
+            reminderEvent.reminderId = reminderId;
+            reminderEvent.reminderEventId = reminderEventId;
+            when(mock.getReminderEvent(reminderEventId)).thenReturn(reminderEvent);
+        });
+             MockedConstruction<Notifications> mockedNotifications = mockConstruction(Notifications.class);
+             MockedStatic<WorkManagerAccess> mockedWorkManagerAccess = mockStatic(WorkManagerAccess.class);
+             MockedStatic<PreferenceManager> mockedPreferencesManager = mockStatic(PreferenceManager.class)) {
+            WorkManager mockWorkManager = mock(WorkManager.class);
+            mockedWorkManagerAccess.when(() -> WorkManagerAccess.getWorkManager(mockApplication)).thenReturn(mockWorkManager);
+            mockedPreferencesManager.when(() -> PreferenceManager.getDefaultSharedPreferences(mockApplication)).thenReturn(mockSharedPreferences);
+
+            ListenableWorker.Result result = reminderWork.doWork();
+            assertInstanceOf(ListenableWorker.Result.Success.class, result);
+
+            // No notification built or posted, reminder event untouched (notificationId stays 0)
+            assertEquals(0, mockedNotifications.constructed().size());
+            verify(mockNotificationManager, never()).notify(anyInt(), any());
+            verify(mockedMedicineRepositories.constructed().get(0), never()).updateReminderEvent(any());
+            // The next reminder is still scheduled
+            verify(mockWorkManager, times(1)).enqueueUniqueWork(eq("reschedule"), any(), any(androidx.work.OneTimeWorkRequest.class));
         }
     }
 
