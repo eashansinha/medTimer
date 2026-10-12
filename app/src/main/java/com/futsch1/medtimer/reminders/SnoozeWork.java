@@ -18,6 +18,9 @@ import java.time.Instant;
  */
 public class SnoozeWork extends RescheduleWork {
 
+    public static final int DEFAULT_SNOOZE_MINUTES = 15;
+    public static final int MAX_SNOOZE_MINUTES = 24 * 60;
+
     public SnoozeWork(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
@@ -26,7 +29,7 @@ public class SnoozeWork extends RescheduleWork {
     @Override
     public Result doWork() {
         Data inputData = getInputData();
-        int snoozeTime = inputData.getInt(EXTRA_SNOOZE_TIME, 15);
+        int snoozeTime = sanitizeSnoozeMinutes(inputData.getInt(EXTRA_SNOOZE_TIME, DEFAULT_SNOOZE_MINUTES));
         Instant remindTime = Instant.now().plusSeconds(snoozeTime * 60L);
 
         int reminderId = inputData.getInt(EXTRA_REMINDER_ID, 0);
@@ -46,5 +49,16 @@ public class SnoozeWork extends RescheduleWork {
         NotificationAction.cancelNotification(context, notificationId);
 
         return Result.success();
+    }
+
+    /**
+     * A zero or negative snooze would re-raise the reminder immediately and loop; an absurdly
+     * large one would silently hide it for days. Fall back to the default or clamp to one day.
+     */
+    public static int sanitizeSnoozeMinutes(int minutes) {
+        if (minutes <= 0) {
+            return DEFAULT_SNOOZE_MINUTES;
+        }
+        return Math.min(minutes, MAX_SNOOZE_MINUTES);
     }
 }

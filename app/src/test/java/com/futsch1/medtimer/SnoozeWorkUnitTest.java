@@ -4,6 +4,7 @@ import static com.futsch1.medtimer.ActivityCodes.EXTRA_NOTIFICATION_ID;
 import static com.futsch1.medtimer.ActivityCodes.EXTRA_REMINDER_EVENT_ID;
 import static com.futsch1.medtimer.ActivityCodes.EXTRA_REMINDER_ID;
 import static com.futsch1.medtimer.ActivityCodes.EXTRA_SNOOZE_TIME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -107,5 +108,15 @@ public class SnoozeWorkUnitTest {
             verify(mockAlarmManager, times(2)).cancel(captor1.capture());
             verify(mockAlarmManager, times(1)).setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, snooze.toEpochMilli(), captor1.getValue());
         }
+    }
+
+    @Test
+    public void testSanitizeSnoozeMinutes() {
+        assertEquals(15, SnoozeWork.sanitizeSnoozeMinutes(0));
+        assertEquals(15, SnoozeWork.sanitizeSnoozeMinutes(-5));
+        assertEquals(1, SnoozeWork.sanitizeSnoozeMinutes(1));
+        assertEquals(90, SnoozeWork.sanitizeSnoozeMinutes(90));
+        assertEquals(24 * 60, SnoozeWork.sanitizeSnoozeMinutes(24 * 60));
+        assertEquals(24 * 60, SnoozeWork.sanitizeSnoozeMinutes(24 * 60 + 1));
     }
 }
