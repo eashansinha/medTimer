@@ -47,7 +47,7 @@ crash in logcat).
 ## 4. CI
 
 `.github/workflows/test.yml` now runs the instrumented suite on an API 37 emulator
-(`target_api_level: 37`). Run for this branch: first run https://github.com/eashansinha/medTimer/actions/runs/38256240864 — `test` job **failed before any test ran**: the pinned `android-emulator-runner` v2.33.0 ran `sdkmanager --install platforms;android-37`, which does not exist (the API 37 packages are `android-37.0`); `dependency-review` fails with "Dependency review is not supported on this repository" (repository setting, pre-existing). Follow-up commit: runner → v2.38.0 and `target_api_level: "37.0"`; the re-run URL and its outcome are reported in the PR, not predicted here.
+(`target_api_level: 37`). Run for this branch: first run https://github.com/eashansinha/medTimer/actions/runs/38256240864 — `test` job **failed before any test ran**: the pinned `android-emulator-runner` v2.33.0 ran `sdkmanager --install platforms;android-37`, which does not exist (the API 37 packages are `android-37.0`); `dependency-review` fails with "Dependency review is not supported on this repository" (repository setting, pre-existing). Follow-up commit: runner → v2.38.0 and `target_api_level: "37.0"`; run 2: https://github.com/eashansinha/medTimer/actions/runs/38256772982 — `build` passed; `Analyze (java-kotlin)` (CodeQL, runs `./gradlew build` incl. lint) failed on the 4 remaining `GradleDependency` lint errors (on `main` the same job fails on the 19 baseline lint errors) and reports "Analysis upload status is failed / configuration error" because code scanning is not enabled on the repository; `dependency-review` fails for the same repository-setting reason. `test`/`androidTest` outcomes: see the PR checks.
 
 ## 5. Not verified / open items
 
