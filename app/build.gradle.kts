@@ -1,13 +1,15 @@
 plugins {
     id("com.android.application")
     id("androidx.room")
-    id("com.github.triplet.play") version "3.12.1"
+    id("com.github.triplet.play") version "4.1.1"
     id("androidx.navigation.safeargs")
-    id("org.jetbrains.kotlin.android")
     id("jacoco")
-    //noinspection GradleDependency: Version 6 crashes with an error in apache.commons.compress
-    id("org.sonarqube") version "5.1.0.4882"
     id("tech.apter.junit5.jupiter.robolectric-extension-gradle-plugin") version "0.9.0"
+    // EE-30: org.sonarqube (5.1.0.4882 and 7.5.0.8588) still uses the legacy AGP variant API
+    // (android.applicationVariants) and fails to apply under AGP 9 ("No Android variant found").
+    // Disabled on this branch; CI only runs `gradle sonar` when SONAR_TOKEN is set. Re-enable once the
+    // plugin supports the AGP 9 Variant API.
+    // id("org.sonarqube") version "7.5.0.8588"
 }
 
 room {
@@ -16,13 +18,13 @@ room {
 
 android {
     namespace = "com.futsch1.medtimer"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.futsch1.medtimer"
         minSdk = 28
         multiDexEnabled = true
-        targetSdk = 35
+        targetSdk = 37
         versionCode = 105
         versionName = "1.16.5"
         base.archivesName = "MedTimer"
@@ -67,9 +69,6 @@ android {
         animationsDisabled = true
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     lint {
         abortOnError = true
         warningsAsErrors = true
@@ -78,16 +77,16 @@ android {
 }
 
 dependencies {
-    val appcompatVersion = "1.7.0"
-    val materialVersion = "1.12.0"
-    val constraintLayoutVersion = "2.2.1"
-    val androidXNavigationVersion = "2.8.9"
+    val appcompatVersion = "1.8.0"
+    val materialVersion = "1.14.0"
+    val constraintLayoutVersion = "2.2.2"
+    val androidXNavigationVersion = "2.10.2"
     val preferenceKtxVersion = "1.2.1"
     val lifecycleExtensionsVersion = "2.2.0"
-    val workRuntimeVersion = "2.10.0"
-    val coreKtxVersion = "1.15.0"
-    val lifecycleViewmodelKtxVersion = "2.8.7"
-    val roomVersion = "2.6.1"
+    val workRuntimeVersion = "2.12.0"
+    val coreKtxVersion = "1.19.1"
+    val lifecycleViewmodelKtxVersion = "2.11.0"
+    val roomVersion = "2.8.5"
     val colorPickerViewVersion = "3.1.0"
     val simplyPDFVersion = "2.1.1"
     val gsonVersion = "2.12.1"
@@ -102,7 +101,7 @@ dependencies {
     val junitVersion = "5.12.0"
     val mockitoCoreVersion = "5.16.0"
     val mockitoInlineVersion = "5.2.0"
-    val robolectricVersion = "4.14.1"
+    val robolectricVersion = "4.17"
     val jazzerVersion = "0.24.0"
 
     val androidTestJunitVersion = "1.2.1"
@@ -176,19 +175,19 @@ java {
 tasks.withType<JavaCompile> {
     options.compilerArgs.addAll(listOf("-Xlint:unchecked", "-Xlint:deprecation"))
 }
-sonar {
-    properties {
-        property("sonar.projectKey", "Futsch1_medTimer")
-        property("sonar.organization", "futsch1")
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.gradle.skipCompile", "true")
-        property("sonar.android.lint.report", "build/reports/lint-results-debug.xml")
-        property(
-            "sonar.coverage.jacoco.xmlReportPaths",
-            "build/reports/jacoco/JacocoDebugCodeCoverage/JacocoDebugCodeCoverage.xml"
-        )
-    }
-}
+// sonar {
+//     properties {
+//         property("sonar.projectKey", "Futsch1_medTimer")
+//         property("sonar.organization", "futsch1")
+//         property("sonar.host.url", "https://sonarcloud.io")
+//         property("sonar.gradle.skipCompile", "true")
+//         property("sonar.android.lint.report", "build/reports/lint-results-debug.xml")
+//         property(
+//             "sonar.coverage.jacoco.xmlReportPaths",
+//             "build/reports/jacoco/JacocoDebugCodeCoverage/JacocoDebugCodeCoverage.xml"
+//         )
+//     }
+// }
 
 tasks.withType(Test::class) {
     configure<JacocoTaskExtension> {
@@ -235,7 +234,7 @@ android {
                 fileTree(layout.buildDirectory.dir("intermediates/javac/")) {
                     exclude(exclusions)
                 },
-                fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/")) {
+                fileTree(layout.buildDirectory.dir("intermediates/built_in_kotlinc/")) {
                     exclude(exclusions)
                 }
             ))

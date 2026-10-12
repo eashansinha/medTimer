@@ -17,6 +17,7 @@ import static com.futsch1.medtimer.ActivityCodes.SNOOZE_ACTION;
 import static com.futsch1.medtimer.ActivityCodes.TAKEN_ACTION;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
@@ -121,8 +122,20 @@ public class ReminderProcessor extends BroadcastReceiver {
         return actionIntent;
     }
 
+    /**
+     * Non-exported {@code <activity-alias>} of {@link MainActivity} declaring the custom notification actions
+     * (Safer Intents, EE-30 / IMP-07).
+     */
+    public static final String NOTIFICATION_ACTION_ACTIVITY = "com.futsch1.medtimer.NotificationActionActivity";
+
+    private static Intent buildNotificationActivityIntent(Context context) {
+        Intent actionIntent = new Intent();
+        actionIntent.setComponent(new ComponentName(context, NOTIFICATION_ACTION_ACTIVITY));
+        return actionIntent;
+    }
+
     public static Intent getVariableAmountActionIntent(Context context, int reminderEventId, String amount) {
-        Intent actionIntent = new Intent(context, MainActivity.class);
+        Intent actionIntent = buildNotificationActivityIntent(context);
         actionIntent.setAction("VARIABLE_AMOUNT");
         actionIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         actionIntent.putExtra(EXTRA_REMINDER_EVENT_ID, reminderEventId);
@@ -131,7 +144,7 @@ public class ReminderProcessor extends BroadcastReceiver {
     }
 
     public static Intent getCustomSnoozeActionIntent(Context context, int reminderId, int reminderEventId, int notificationId) {
-        Intent actionIntent = new Intent(context, MainActivity.class);
+        Intent actionIntent = buildNotificationActivityIntent(context);
         actionIntent.setAction("CUSTOM_SNOOZE");
         actionIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         actionIntent.putExtra(EXTRA_REMINDER_ID, reminderId);
