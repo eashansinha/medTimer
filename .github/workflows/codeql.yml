@@ -74,7 +74,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@94baf225fe0a508e581a564467443d0e2379123b # v4.3.0
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew clean assembleDebug --no-daemon --no-build-cache
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@6bb031afdd8eb862ea3fc1848194185e076637e5 # v3.28.11
